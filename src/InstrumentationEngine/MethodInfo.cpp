@@ -1426,34 +1426,33 @@ void MicrosoftInstrumentationEngine::CMethodInfo::LogInstructionGraph(_In_ CInst
         return;
     }
 
-    CComPtr<IInstruction> pInstruction;
+    CComPtr<IInstruction> pFirstInstruction;
 
     CLogging::LogDumpMessage(_T("[TestIgnore]<OriginalInstructions><![CDATA[\r\n"));
 
-    pInstructionGraph->GetOriginalFirstInstruction(&pInstruction);
-
-    while (pInstruction != NULL)
+    pInstructionGraph->GetOriginalFirstInstruction(&pFirstInstruction);
+    CComQIPtr<CInstruction> pInstruction = pFirstInstruction;
+    CInstruction* pCurr = pInstruction;
+    while (pCurr != NULL)
     {
-        ((CInstruction*)pInstruction.p)->LogInstruction(true);
+        pCurr->LogInstruction(true);
 
-        CComPtr<IInstruction> pTemp = pInstruction;
-        pInstruction.Release();
-        pTemp->GetOriginalNextInstruction(&pInstruction);
+        pCurr = pCurr->OriginalNextInstructionInternal();
     }
 
     CLogging::LogDumpMessage(_T("[TestIgnore]]]></OriginalInstructions>\r\n"));
 
     CLogging::LogDumpMessage(_T("    <Instructions><![CDATA[\r\n"));
 
-    pInstructionGraph->GetFirstInstruction(&pInstruction);
+    pFirstInstruction.Release();
+    pInstructionGraph->GetFirstInstruction(&pFirstInstruction);
+    pInstruction = pFirstInstruction;
+    pCurr = pInstruction;
 
-    while (pInstruction != NULL)
+    while (pCurr != NULL)
     {
-        ((CInstruction*)pInstruction.p)->LogInstruction(false);
-
-        CComPtr<IInstruction> pTemp = pInstruction;
-        pInstruction.Release();
-        pTemp->GetNextInstruction(&pInstruction);
+        pCurr->LogInstruction(false);
+        pCurr = pCurr->NextInstructionInternal();
     }
 
     CLogging::LogDumpMessage(_T("    ]]></Instructions>\r\n"));

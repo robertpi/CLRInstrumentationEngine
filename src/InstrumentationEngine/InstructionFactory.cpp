@@ -384,21 +384,23 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::DecodeInstructionBy
 
     IfFailRet(pInstructionGraph->DecodeInstructions(instructionBytes, pEndOfCode));
 
-    CComPtr<CInstruction> pCurrInstruction;
-    pInstructionGraph->GetFirstInstruction((IInstruction**)(&pCurrInstruction));
+    CComPtr<CInstruction> pFirstInstruction;
+    pInstructionGraph->GetFirstInstruction((IInstruction**)(&pFirstInstruction));
+
 
     // The instruction graph will set these up as if they were from existing il.
     // However, the intended use case of DecodeInstructionByteStream is for parsing a
     // blob of il to be inserted into another il graph. So, mark all of these
     // instructions "New" and set the original offset to 0.
+
+    // Note: this is not in a CComPtr because it is faster to not addref/release
+    CInstruction* pCurrInstruction = pFirstInstruction;
     while (pCurrInstruction != NULL)
     {
         IfFailRet(pCurrInstruction->SetOriginalOffset(0));
         IfFailRet(pCurrInstruction->SetInstructionGeneration(InstructionGeneration::Generation_New));
 
-        CComPtr<IInstruction> pTemp = (IInstruction*)pCurrInstruction;
-        pCurrInstruction.Release();
-        pTemp->GetNextInstruction((IInstruction**)(&pCurrInstruction));
+        pCurrInstruction = pCurrInstruction->NextInstructionInternal();
     }
 
     *ppInstructionGraph = (IInstructionGraph*)(pInstructionGraph.Detach());

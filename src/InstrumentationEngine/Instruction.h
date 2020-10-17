@@ -11,7 +11,7 @@ using namespace ATL;
 namespace MicrosoftInstrumentationEngine
 {
     class __declspec(uuid("BEA964F2-5527-4F7C-B606-D8A1BD8CFB39"))
-    CInstruction : public IInstruction, public CDataContainer
+    CInstruction : public IInstruction2, public CDataContainer
     {
         friend CInstructionGraph::~CInstructionGraph();
 
@@ -124,6 +124,10 @@ namespace MicrosoftInstrumentationEngine
         virtual HRESULT __stdcall GetOriginalPreviousInstruction(_Out_ IInstruction** ppPrevInstruction) override;
 
         virtual HRESULT __stdcall GetInstructionGeneration(_Out_ InstructionGeneration* pInstructionGeneration) override;
+
+        virtual IInstruction2* __stdcall  NextInstruction() override;
+        virtual IInstruction2* __stdcall  PreviousInstruction() override;
+
     public:
         // NOTE: these do not fixup the rest of hte graph. Call the versions on instruction graph if you want
         // previous, and next to be udpated correctly
@@ -142,6 +146,10 @@ namespace MicrosoftInstrumentationEngine
         HRESULT EmitIL(_In_ BYTE* pILBuffer, _In_ DWORD dwcbILBuffer);
 
         HRESULT LogInstruction(_In_ BOOL ignoreTest);
+
+        CInstruction* NextInstructionInternal() { return m_pNextInstruction; }
+        CInstruction* PreviousInstructionInternal() { return m_pPreviousInstruction; }
+        CInstruction* OriginalNextInstructionInternal() { return m_pOriginalNextInstruction; }
 
     private:
         // If the callee token is a MethodSpec (generic method), the parameter count and signature returned

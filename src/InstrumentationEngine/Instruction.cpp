@@ -686,6 +686,11 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetNextInstruction(_Out_ I
     return S_OK;
 }
 
+IInstruction2* MicrosoftInstrumentationEngine::CInstruction::NextInstruction()
+{
+    return NextInstructionInternal();
+}
+
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetPreviousInstruction(_Out_ IInstruction** ppPrevInstruction)
 {
     HRESULT hr = S_OK;
@@ -705,6 +710,11 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetPreviousInstruction(_Ou
     CLogging::LogMessage(_T("End CInstruction::GetPreviousInstruction"));
 
     return S_OK;
+}
+
+IInstruction2* MicrosoftInstrumentationEngine::CInstruction::PreviousInstruction()
+{
+    return PreviousInstructionInternal();
 }
 
 // Get the original instructions from the graph before any instrumentation method made chanages to it.

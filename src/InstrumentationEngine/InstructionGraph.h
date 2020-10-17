@@ -131,5 +131,8 @@ namespace MicrosoftInstrumentationEngine
 
     private:
         HRESULT IsFirstInstructionInCatch(_In_ IInstruction* pInstr, _Out_ bool* pIsFirstInstructionInCatch);
+
+        // Second pass for decoding instructions.
+        HRESULT InitializeBranches(_In_ CInstruction* pLastInstruction, _In_ const std::unordered_map<ULONG, CComPtr<CInstruction>>& offsetMap);
     };
 }
