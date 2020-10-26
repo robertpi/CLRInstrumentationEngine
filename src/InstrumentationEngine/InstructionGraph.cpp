@@ -68,11 +68,11 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::Initialize(_In_ CMeth
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CInstructionGraph::Initialize"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::Initialize"));
 
     m_pMethodInfo = pMethodInfo;
 
-    CLogging::LogMessage(_T("End CInstructionGraph::Initialize"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::Initialize"));
 
     return hr;
 }
@@ -223,7 +223,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetInstructionAtUnins
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::DecodeInstructions(_In_ LPCBYTE pCodeBase, _In_ LPCBYTE pEndOfCode)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::Decode"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::Decode"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -545,7 +545,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetInstructionAtEndOf
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::CalculateInstructionOffsets()
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::CalculateInstructionOffsets"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::CalculateInstructionOffsets"));
     CCriticalSectionHolder lock(&m_cs);
 
     ULONG pos = 0;
@@ -567,14 +567,14 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::CalculateInstructionO
         pCurrent = pCurrent->NextInstructionInternal();
     }
 
-    CLogging::LogMessage(_T("End CInstructionGraph::CalculateInstructionOffsets"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::CalculateInstructionOffsets"));
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::ExpandBranches()
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::ExpandBranches"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::ExpandBranches"));
     CCriticalSectionHolder lock(&m_cs);
 
     ULONG pos = 0;
@@ -595,7 +595,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::ExpandBranches()
     }
 
     CalculateInstructionOffsets();
-    CLogging::LogMessage(_T("End CInstructionGraph::ExpandBranches"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::ExpandBranches"));
 
     return S_OK;
 }
@@ -604,7 +604,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetMethodInfo(_Out_ I
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CInstructionGraph::Initialize"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::Initialize"));
     IfNullRetPointer(ppMethodInfo);
 
     if (!m_pMethodInfo)
@@ -615,7 +615,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetMethodInfo(_Out_ I
     *ppMethodInfo = m_pMethodInfo;
     (*ppMethodInfo)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionGraph::Initialize"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::Initialize"));
 
     return hr;
 }
@@ -624,7 +624,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetMethodInfo(_Out_ I
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetFirstInstruction(_Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::GetFirstInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::GetFirstInstruction"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(ppInstruction);
@@ -635,7 +635,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetFirstInstruction(_
         (*ppInstruction)->AddRef();
     }
 
-    CLogging::LogMessage(_T("End CInstructionGraph::GetFirstInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::GetFirstInstruction"));
 
     return hr;
 }
@@ -643,7 +643,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetFirstInstruction(_
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetLastInstruction(_Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::GetLastInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::GetLastInstruction"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(ppInstruction);
@@ -654,7 +654,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetLastInstruction(_O
         (*ppInstruction)->AddRef();
     }
 
-    CLogging::LogMessage(_T("End CInstructionGraph::GetLastInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::GetLastInstruction"));
 
     return hr;
 }
@@ -662,7 +662,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetLastInstruction(_O
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetOriginalFirstInstruction(_Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::GetOriginalFirstInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::GetOriginalFirstInstruction"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(ppInstruction);
@@ -670,7 +670,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetOriginalFirstInstr
     *ppInstruction = (IInstruction*)(m_pOrigFirstInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionGraph::GetOriginalFirstInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::GetOriginalFirstInstruction"));
 
     return hr;
 }
@@ -678,7 +678,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetOriginalFirstInstr
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetOriginalLastInstruction(_Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::GetOriginalLastInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::GetOriginalLastInstruction"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(ppInstruction);
@@ -686,7 +686,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetOriginalLastInstru
     *ppInstruction = (IInstruction*)(m_pOrigLastInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionGraph::GetOriginalLastInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::GetOriginalLastInstruction"));
 
     return hr;
 }
@@ -694,7 +694,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetOriginalLastInstru
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetUninstrumentedFirstInstruction(_Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::GetUninstrumentedFirstInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::GetUninstrumentedFirstInstruction"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(ppInstruction);
@@ -707,7 +707,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetUninstrumentedFirs
 
     hr = m_pUninstrumentedFirstInstruction.QueryInterface(ppInstruction);
 
-    CLogging::LogMessage(_T("End CInstructionGraph::GetUninstrumentedFirstInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::GetUninstrumentedFirstInstruction"));
 
     return hr;
 }
@@ -715,7 +715,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetUninstrumentedFirs
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetUninstrumentedLastInstruction(_Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::GetUninstrumentedFirstInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::GetUninstrumentedFirstInstruction"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(ppInstruction);
@@ -727,7 +727,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetUninstrumentedLast
     }
     hr = m_pUninstrumentedLastInstruction.QueryInterface(ppInstruction);
 
-    CLogging::LogMessage(_T("End CInstructionGraph::GetUninstrumentedFirstInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::GetUninstrumentedFirstInstruction"));
 
     return hr;
 }
@@ -735,7 +735,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetUninstrumentedLast
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetInstructionAtOffset(_In_  DWORD offset, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::GetInstructionAtOffset"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::GetInstructionAtOffset"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(ppInstruction);
@@ -757,7 +757,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetInstructionAtOffse
         pCurrInstruction = pCurrInstruction->NextInstructionInternal();
     }
 
-    CLogging::LogMessage(_T("End CInstructionGraph::GetInstructionAtOffset"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::GetInstructionAtOffset"));
 
     return E_FAIL;
 }
@@ -765,7 +765,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetInstructionAtOffse
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetInstructionAtOriginalOffset(_In_  DWORD offset, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::GetInstructionAtOriginalOffset"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::GetInstructionAtOriginalOffset"));
     CCriticalSectionHolder lock(&m_cs);
     IfNullRetPointer(ppInstruction);
 
@@ -795,7 +795,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetInstructionAtOrigi
         }
     }
 
-    CLogging::LogMessage(_T("End CInstructionGraph::GetInstructionAtOriginalOffset"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::GetInstructionAtOriginalOffset"));
 
     return E_FAIL;
 }
@@ -805,7 +805,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::GetInstructionAtOrigi
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::InsertBefore(_In_ IInstruction* pInstructionOrig, _In_ IInstruction* pInstructionNew)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::InsertBefore"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::InsertBefore"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(pInstructionOrig);
@@ -838,7 +838,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::InsertBefore(_In_ IIn
     // This is necessary since this is an API to be consumed by multiple instermentation methods.
     IfFailRet(CalculateInstructionOffsets());
 
-    CLogging::LogMessage(_T("End CInstructionGraph::InsertBefore"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::InsertBefore"));
 
     return hr;
 }
@@ -848,7 +848,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::InsertBefore(_In_ IIn
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::InsertAfter(_In_ IInstruction* pInstructionOrig, _In_ IInstruction* pInstructionNew)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::InsertAfter"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::InsertAfter"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(pInstructionNew);
@@ -887,7 +887,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::InsertAfter(_In_ IIns
     // This is necessary since this is an API to be consumed by multiple instermentation methods.
     IfFailRet(CalculateInstructionOffsets());
 
-    CLogging::LogMessage(_T("End CInstructionGraph::InsertAfter"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::InsertAfter"));
 
     return hr;
 }
@@ -898,7 +898,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::InsertBeforeAndRetarg
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CInstructionGraph::InsertBeforeAndRetargetOffsets"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::InsertBeforeAndRetargetOffsets"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(pInstructionOrig);
@@ -985,7 +985,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::InsertBeforeAndRetarg
         }
     }
 
-    CLogging::LogMessage(_T("End CInstructionGraph::InsertBeforeAndRetargetOffsets"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::InsertBeforeAndRetargetOffsets"));
 
     return hr;
 }
@@ -995,7 +995,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::InsertBeforeAndRetarg
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::Replace(_In_ IInstruction* pInstructionOrig, _In_ IInstruction *pInstructionNew)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::Replace"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::Replace"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(pInstructionOrig);
@@ -1045,7 +1045,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::Replace(_In_ IInstruc
         }
     }
 
-    CLogging::LogMessage(_T("End CInstructionGraph::Replace"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::Replace"));
 
     return hr;
 }
@@ -1055,7 +1055,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::Remove(_In_ IInstruct
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CInstructionGraph::Remove"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::Remove"));
     CCriticalSectionHolder lock(&m_cs);
 
     IfNullRetPointer(pInstruction);
@@ -1118,7 +1118,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::Remove(_In_ IInstruct
         }
     }
 
-    CLogging::LogMessage(_T("End CInstructionGraph::Remove"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::Remove"));
 
     return hr;
 }
@@ -1128,7 +1128,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::Remove(_In_ IInstruct
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::RemoveAll()
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionGraph::RemoveAll"));
+    C_LOGMESSAGE(_T("Starting CInstructionGraph::RemoveAll"));
     CCriticalSectionHolder lock(&m_cs);
 
     CInstruction* pInstr = (CInstruction*)m_pFirstInstruction;
@@ -1167,7 +1167,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::RemoveAll()
         IfFailRet(pExceptionSection->RemoveAllExceptionClauses());
     }
 
-    CLogging::LogMessage(_T("End CInstructionGraph::Remove"));
+    C_LOGMESSAGE(_T("End CInstructionGraph::Remove"));
 
     return hr;
 }

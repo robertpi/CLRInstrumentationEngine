@@ -52,7 +52,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAppDomainCount(
 HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAppDomainById(_In_ AppDomainID appDomainId, _Out_ IAppDomainInfo** ppAppDomainInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CAppDomainCollection::GetAppDomainById"));
+    C_LOGMESSAGE(_T("Starting CAppDomainCollection::GetAppDomainById"));
     IfNullRetPointer(ppAppDomainInfo);
     *ppAppDomainInfo = nullptr;
 
@@ -62,14 +62,14 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAppDomainById(_
 
     if (iter == m_appDomains.end())
     {
-        CLogging::LogMessage(_T("CAppDomainCollection::GetAppDomainById - Failed to find specified appdomain %04x"), appDomainId);
+        C_LOGMESSAGE(_T("CAppDomainCollection::GetAppDomainById - Failed to find specified appdomain %04x"), appDomainId);
         return E_FAIL;
     }
 
     *ppAppDomainInfo = (iter->second);
     (*ppAppDomainInfo)->AddRef();
 
-    CLogging::LogMessage(_T("End CAppDomainCollection::GetAppDomainById"));
+    C_LOGMESSAGE(_T("End CAppDomainCollection::GetAppDomainById"));
 
     return hr;
 }
@@ -77,7 +77,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAppDomainById(_
 HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::RemoveAppDomainInfo(_In_ AppDomainID appDomainId)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CAppDomainCollection::RemoveAppDomainInfo"));
+    C_LOGMESSAGE(_T("Starting CAppDomainCollection::RemoveAppDomainInfo"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -91,7 +91,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::RemoveAppDomainInf
 
     m_appDomains.erase(iter);
 
-    CLogging::LogMessage(_T("End CAppDomainCollection::RemoveAppDomainInfo"));
+    C_LOGMESSAGE(_T("End CAppDomainCollection::RemoveAppDomainInfo"));
 
     return hr;
 }
@@ -100,7 +100,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::RemoveAppDomainInf
 HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAppDomainIDs(_In_ DWORD cAppDomains, _Out_ DWORD* pcActual, _Out_writes_(cAppDomains) AppDomainID* pAppDomainIDs)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CAppDomainCollection::GetAppDomainIDs"));
+    C_LOGMESSAGE(_T("Starting CAppDomainCollection::GetAppDomainIDs"));
 
     IfNullRetPointer(pcActual);
     IfNullRetPointer(pAppDomainIDs);
@@ -126,7 +126,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAppDomainIDs(_I
 
     *pcActual = i;
 
-    CLogging::LogMessage(_T("End CAppDomainCollection::GetAppDomainIDs"));
+    C_LOGMESSAGE(_T("End CAppDomainCollection::GetAppDomainIDs"));
 
     return hr;
 }
@@ -134,7 +134,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAppDomainIDs(_I
 HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAppDomains(_Out_ IEnumAppDomainInfo** ppEnumAppDomains)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CAppDomainCollection::GetAppDomains"));
+    C_LOGMESSAGE(_T("Starting CAppDomainCollection::GetAppDomains"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -156,7 +156,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAppDomains(_Out
     *ppEnumAppDomains = (IEnumAppDomainInfo*)pEnumerator;
     (*ppEnumAppDomains)->AddRef();
 
-    CLogging::LogMessage(_T("End CAppDomainCollection::GetAppDomains"));
+    C_LOGMESSAGE(_T("End CAppDomainCollection::GetAppDomains"));
     return hr;
 }
 
@@ -164,7 +164,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAssemblyInfoByI
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CAppDomainCollection::GetAssemblyInfoById"));
+    C_LOGMESSAGE(_T("Starting CAppDomainCollection::GetAssemblyInfoById"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -173,12 +173,12 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetAssemblyInfoByI
         hr = p.second->GetAssemblyInfoById(assemblyID, ppAssemblyInfo);
         if (SUCCEEDED(hr))
         {
-            CLogging::LogMessage(_T("End CAppDomainCollection::GetAssemblyInfoById - found assembly"));
+            C_LOGMESSAGE(_T("End CAppDomainCollection::GetAssemblyInfoById - found assembly"));
             return S_OK;
         }
     }
 
-    CLogging::LogMessage(_T("End CAppDomainCollection::GetAssemblyInfoById - no assembly found"));
+    C_LOGMESSAGE(_T("End CAppDomainCollection::GetAssemblyInfoById - no assembly found"));
 
     return E_FAIL;
 }
@@ -187,7 +187,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetModuleInfoById(
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CAppDomainCollection::GetModuleInfoById"));
+    C_LOGMESSAGE(_T("Starting CAppDomainCollection::GetModuleInfoById"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -196,12 +196,12 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetModuleInfoById(
         hr = p.second->GetModuleInfoById(moduleID, ppModuleInfo);
         if (SUCCEEDED(hr))
         {
-            CLogging::LogMessage(_T("End CAppDomainCollection::GetModuleInfoById - found module"));
+            C_LOGMESSAGE(_T("End CAppDomainCollection::GetModuleInfoById - found module"));
             return S_OK;
         }
     }
 
-    CLogging::LogMessage(_T("End CAppDomainCollection::GetModuleInfoById - no module found"));
+    C_LOGMESSAGE(_T("End CAppDomainCollection::GetModuleInfoById - no module found"));
 
     return E_FAIL;
 }
@@ -211,7 +211,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetModuleInfosByMv
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CAppDomainCollection::GetModuleInfosByMvid"));
+    C_LOGMESSAGE(_T("Starting CAppDomainCollection::GetModuleInfosByMvid"));
     CCriticalSectionHolder lock(&m_cs);
     *ppEnum = NULL;
 
@@ -250,7 +250,7 @@ HRESULT MicrosoftInstrumentationEngine::CAppDomainCollection::GetModuleInfosByMv
     *ppEnum = (IEnumModuleInfo*)pEnumerator;
     (*ppEnum)->AddRef();
 
-    CLogging::LogMessage(_T("End CAppDomainCollection::GetModuleInfosByMvid"));
+    C_LOGMESSAGE(_T("End CAppDomainCollection::GetModuleInfosByMvid"));
 
     return S_OK;
 }

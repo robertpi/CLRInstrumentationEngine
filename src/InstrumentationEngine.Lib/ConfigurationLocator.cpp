@@ -129,7 +129,7 @@ namespace MicrosoftInstrumentationEngine
         const DWORD cchExpandedValueWithNull = ExpandEnvironmentStrings(wszPath, nullptr, 0);
         if (0 == cchExpandedValueWithNull)
         {
-            CLogging::LogMessage(_T("ConfigurationLocator::AddExpandedPath - ExpandEnvironmentStrings(szVariableValue, nullptr, 0) failed: 0x%08X"), HRESULT_FROM_WIN32(GetLastError()));
+            C_LOGMESSAGE(_T("ConfigurationLocator::AddExpandedPath - ExpandEnvironmentStrings(szVariableValue, nullptr, 0) failed: 0x%08X"), HRESULT_FROM_WIN32(GetLastError()));
 
             return S_OK;
         }
@@ -138,7 +138,7 @@ namespace MicrosoftInstrumentationEngine
         unique_ptr<WCHAR[]> pwszExpandedValue = make_unique<WCHAR[]>(cchExpandedValueWithNull);
         if (0 == ExpandEnvironmentStrings(wszPath, pwszExpandedValue.get(), cchExpandedValueWithNull))
         {
-            CLogging::LogMessage(_T("ConfigurationLocator::AddExpandedPath - ExpandEnvironmentStrings(szVariableValue, pszExpandedValue.get(), cchExpandedValueWithNull) failed: 0x%08X"), HRESULT_FROM_WIN32(GetLastError()));
+            C_LOGMESSAGE(_T("ConfigurationLocator::AddExpandedPath - ExpandEnvironmentStrings(szVariableValue, pszExpandedValue.get(), cchExpandedValueWithNull) failed: 0x%08X"), HRESULT_FROM_WIN32(GetLastError()));
 
             return S_OK;
         }
@@ -152,7 +152,7 @@ namespace MicrosoftInstrumentationEngine
         // an invalid drive letter or that the path does not exist.
         if (nullptr == pwszAbsolutePath)
         {
-            CLogging::LogMessage(_T("CConfigurationLocator::AddExpandedPath - _wfullpath returned nullptr for '%s'"), pwszExpandedValue.get());
+            C_LOGMESSAGE(_T("CConfigurationLocator::AddExpandedPath - _wfullpath returned nullptr for '%s'"), pwszExpandedValue.get());
         }
         else
         {
@@ -195,7 +195,7 @@ namespace MicrosoftInstrumentationEngine
     {
         if (::GetFileAttributes(wszConfigurationPath) == INVALID_FILE_ATTRIBUTES)
         {
-            CLogging::LogMessage(_T("CConfigurationLocator::AddSource - unable to find config path '%s': 0x%08X"), wszConfigurationPath, HRESULT_FROM_WIN32(GetLastError()));
+            C_LOGMESSAGE(_T("CConfigurationLocator::AddSource - unable to find config path '%s': 0x%08X"), wszConfigurationPath, HRESULT_FROM_WIN32(GetLastError()));
             return S_FALSE;
         }
 

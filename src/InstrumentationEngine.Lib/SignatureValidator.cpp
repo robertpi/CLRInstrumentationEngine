@@ -122,7 +122,7 @@ bool CSignatureValidator::VerifyEmbeddedSignature(_In_ LPCWSTR pwszSourceFile)
         "Yes" when asked to install and run the signed
         subject.
         */
-        CLogging::LogMessage(_T("The file is signed and the signature was verified"));
+        C_LOGMESSAGE(_T("The file is signed and the signature was verified"));
         result = true;
         break;
 

@@ -14,7 +14,7 @@ MicrosoftInstrumentationEngine::CInstructionFactory::CInstructionFactory()
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateInstruction(_In_ enum ILOrdinalOpcode opcode, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<CInstruction> pInstruction;
@@ -27,7 +27,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateInstruction(_
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateInstruction"));
     return S_OK;
 }
 
@@ -35,7 +35,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateInstruction(_
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateByteOperandInstruction(_In_ enum ILOrdinalOpcode opcode, _In_ BYTE operand, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateByteOperandInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateByteOperandInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<COperandInstruction> pInstruction;
@@ -48,7 +48,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateByteOperandIn
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateByteOperandInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateByteOperandInstruction"));
 
     return S_OK;
 }
@@ -57,7 +57,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateByteOperandIn
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateUShortOperandInstruction(_In_ enum ILOrdinalOpcode opcode, _In_ USHORT operand, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateUShortOperandInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateUShortOperandInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<COperandInstruction> pInstruction;
@@ -70,7 +70,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateUShortOperand
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateUShortOperandInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateUShortOperandInstruction"));
     return S_OK;
 }
 
@@ -78,7 +78,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateUShortOperand
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateIntOperandInstruction(_In_ enum ILOrdinalOpcode opcode, _In_ INT32 operand, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateULongOperandInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateULongOperandInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<COperandInstruction> pInstruction;
@@ -91,7 +91,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateIntOperandIns
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateULongOperandInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateULongOperandInstruction"));
     return S_OK;
 }
 
@@ -99,7 +99,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateIntOperandIns
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLongOperandInstruction(_In_ enum ILOrdinalOpcode opcode, _In_ INT64 operand, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateLongOperandInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateLongOperandInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<COperandInstruction> pInstruction;
@@ -112,7 +112,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLongOperandIn
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateLongOperandInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateLongOperandInstruction"));
     return S_OK;
 }
 
@@ -121,7 +121,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLongOperandIn
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateFloatOperandInstruction(_In_ enum ILOrdinalOpcode opcode, _In_ float operand, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateLongOperandInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateLongOperandInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<COperandInstruction> pInstruction;
@@ -134,7 +134,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateFloatOperandI
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateLongOperandInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateLongOperandInstruction"));
     return S_OK;
 }
 
@@ -142,7 +142,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateFloatOperandI
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateDoubleOperandInstruction(_In_ enum ILOrdinalOpcode opcode, _In_ double operand, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateDoubleOperandInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateDoubleOperandInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<COperandInstruction> pInstruction;
@@ -155,7 +155,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateDoubleOperand
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateDoubleOperandInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateDoubleOperandInstruction"));
     return S_OK;
 }
 
@@ -163,7 +163,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateDoubleOperand
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateTokenOperandInstruction(_In_ enum ILOrdinalOpcode opcode, _In_ mdToken operand, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateDoubleOperandInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateDoubleOperandInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<COperandInstruction> pInstruction;
@@ -176,7 +176,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateTokenOperandI
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateDoubleOperandInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateDoubleOperandInstruction"));
     return S_OK;
 }
 
@@ -184,7 +184,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateTokenOperandI
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateBranchInstruction(_In_ enum ILOrdinalOpcode opcode, _In_ IInstruction* pBranchTarget, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateBranchInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateBranchInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<CBranchInstruction> pInstruction;
@@ -203,7 +203,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateBranchInstruc
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateBranchInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateBranchInstruction"));
     return S_OK;
 }
 
@@ -215,7 +215,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateSwitchInstruc
     _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateSwitchInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateSwitchInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<CSwitchInstruction> pInstruction;
@@ -228,7 +228,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateSwitchInstruc
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateSwitchInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateSwitchInstruction"));
     return S_OK;
 }
 
@@ -239,7 +239,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateSwitchInstruc
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadConstInstruction(_In_ int value, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateLoadConstInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateLoadConstInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<CLoadConstInstruction> pInstruction;
@@ -252,7 +252,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadConstInst
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateLoadConstInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateLoadConstInstruction"));
 
     return S_OK;
 }
@@ -261,7 +261,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadConstInst
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadLocalInstruction(_In_ USHORT index, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateLoadLocalInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateLoadLocalInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<CLoadLocalInstruction> pInstruction;
@@ -274,7 +274,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadLocalInst
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateLoadLocalInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateLoadLocalInstruction"));
 
     return S_OK;
 }
@@ -283,7 +283,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadLocalInst
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadLocalAddressInstruction(_In_ USHORT index, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateLoadLocalAddressInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateLoadLocalAddressInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<CLoadLocalAddrInstruction> pInstruction;
@@ -296,7 +296,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadLocalAddr
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateLoadLocalAddressInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateLoadLocalAddressInstruction"));
 
     return S_OK;
 }
@@ -305,7 +305,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadLocalAddr
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateStoreLocalInstruction(_In_ USHORT index, _Out_ IInstruction** ppInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateStoreLocalInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateStoreLocalInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<CStoreLocalInstruction> pInstruction;
@@ -318,7 +318,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateStoreLocalIns
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateStoreLocalInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateStoreLocalInstruction"));
 
     return S_OK;
 }
@@ -328,7 +328,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadArgInstru
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateLoadArgInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateLoadArgInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<CLoadArgInstruction> pInstruction;
@@ -341,7 +341,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadArgInstru
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateLoadArgInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateLoadArgInstruction"));
 
     return S_OK;
 }
@@ -351,7 +351,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadArgAddres
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CInstructionFactory::CreateLoadArgAddressInstruction"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::CreateLoadArgAddressInstruction"));
     IfNullRetPointer(ppInstruction);
 
     CComPtr<CLoadArgAddrInstruction> pInstruction;
@@ -364,7 +364,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadArgAddres
     *ppInstruction = (IInstruction*)(pInstruction.p);
     (*ppInstruction)->AddRef();
 
-    CLogging::LogMessage(_T("End CInstructionFactory::CreateLoadArgAddressInstruction"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::CreateLoadArgAddressInstruction"));
 
     return S_OK;
 }
@@ -372,7 +372,7 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::CreateLoadArgAddres
 HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::DecodeInstructionByteStream(_In_ DWORD cbMethod, _In_ LPCBYTE instructionBytes, _Out_ IInstructionGraph** ppInstructionGraph)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstructionFactory::DecodeInstructionByteStream"));
+    C_LOGMESSAGE(_T("Starting CInstructionFactory::DecodeInstructionByteStream"));
     IfNullRetPointer(instructionBytes);
     IfNullRetPointer(ppInstructionGraph);
     *ppInstructionGraph = NULL;
@@ -399,6 +399,6 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionFactory::DecodeInstructionBy
 
     *ppInstructionGraph = (IInstructionGraph*)(pInstructionGraph.Detach());
 
-    CLogging::LogMessage(_T("End CInstructionFactory::DecodeInstructionByteStream"));
+    C_LOGMESSAGE(_T("End CInstructionFactory::DecodeInstructionByteStream"));
     return hr;
 }

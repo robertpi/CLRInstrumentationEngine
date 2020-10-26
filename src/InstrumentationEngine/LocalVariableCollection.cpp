@@ -39,7 +39,7 @@ HRESULT MicrosoftInstrumentationEngine::CLocalVariableCollection::ReplaceSignatu
 {
     //TODO Should we allow complete signature removal?
 
-    CLogging::LogMessage(_T("Begin CLocalVariableCollection::ReplaceSignature"));
+    C_LOGMESSAGE(_T("Begin CLocalVariableCollection::ReplaceSignature"));
 
     if (m_bReadOnly)
     {
@@ -71,7 +71,7 @@ HRESULT MicrosoftInstrumentationEngine::CLocalVariableCollection::ReplaceSignatu
 
     IfFailRet(Initialize());
 
-    CLogging::LogMessage(_T("End CLocalVariableCollection::ReplaceSignature"));
+    C_LOGMESSAGE(_T("End CLocalVariableCollection::ReplaceSignature"));
 
     return S_OK;
 }

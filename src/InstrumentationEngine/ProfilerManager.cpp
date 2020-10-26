@@ -373,7 +373,7 @@ HRESULT CProfilerManager::GetAppDomainCollection(_Out_ IAppDomainCollection** pp
 // profiler manager through this function.
 HRESULT CProfilerManager::LogMessage(_In_ const WCHAR* wszMessage)
 {
-    CLogging::LogMessage(wszMessage);
+    C_LOGMESSAGE(wszMessage);
     return S_OK;
 }
 
@@ -432,7 +432,7 @@ DWORD WINAPI CProfilerManager::InstrumentationMethodThreadProc(
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CProfilerManager::InstrumentationMethodThreadProc"));
+    C_LOGMESSAGE(_T("Starting CProfilerManager::InstrumentationMethodThreadProc"));
 
 #ifndef PLATFORM_UNIX
     hr = CoInitialize(NULL);
@@ -459,7 +459,7 @@ DWORD WINAPI CProfilerManager::InstrumentationMethodThreadProc(
     CoUninitialize();
 #endif
 
-    CLogging::LogMessage(_T("End CProfilerManager::InstrumentationMethodThreadProc"));
+    C_LOGMESSAGE(_T("End CProfilerManager::InstrumentationMethodThreadProc"));
 
     return 0;
 }
@@ -471,7 +471,7 @@ DWORD WINAPI CProfilerManager::ParseAttachConfigurationThreadProc(
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CConfigurationLocator::ParseAttachConfigurationThreadProc"));
+    C_LOGMESSAGE(_T("Starting CConfigurationLocator::ParseAttachConfigurationThreadProc"));
 
 #ifndef PLATFORM_UNIX
     hr = CoInitialize(NULL);
@@ -609,7 +609,7 @@ DWORD WINAPI CProfilerManager::ParseAttachConfigurationThreadProc(
     CoUninitialize();
 #endif
 
-    CLogging::LogMessage(_T("End CConfigurationLocator::ParseAttachConfigurationThreadProc"));
+    C_LOGMESSAGE(_T("End CConfigurationLocator::ParseAttachConfigurationThreadProc"));
 
     return 0;
 }
@@ -685,7 +685,7 @@ HRESULT CProfilerManager::LoadInstrumentationMethods(_In_ CConfigurationSource* 
             WCHAR wszCurrentMethodGuid[40] = { 0 };
             if (0 != ::StringFromGUID2(currentMethodGuid, wszCurrentMethodGuid, 40))
             {
-                CLogging::LogMessage(_T("CProfilerManager::LoadInstrumentationMethods - Instrumentation Method found with duplicate ClassId '%s' of another previously loaded method. Skipping."), wszCurrentMethodGuid);
+                C_LOGMESSAGE(_T("CProfilerManager::LoadInstrumentationMethods - Instrumentation Method found with duplicate ClassId '%s' of another previously loaded method. Skipping."), wszCurrentMethodGuid);
             }
 
             delete method;
@@ -1132,7 +1132,7 @@ HRESULT CProfilerManager::SetupRawProfiler()
 
     if (S_OK == hr)
     {
-        CLogging::LogMessage(_T("Attempting to load raw profiler from '%s'."), wstrRawProfilerModulePath.c_str());
+        C_LOGMESSAGE(_T("Attempting to load raw profiler from '%s'."), wstrRawProfilerModulePath.c_str());
 
         IfFalseRet(PathUtils::Exists(wstrRawProfilerModulePath), E_NOT_SET);
 
@@ -1145,13 +1145,13 @@ HRESULT CProfilerManager::SetupRawProfiler()
             m_hRawProfilerModule
             ));
 
-        CLogging::LogMessage(_T("Raw profiler module loaded, component instance created."));
+        C_LOGMESSAGE(_T("Raw profiler module loaded, component instance created."));
 
         IfFailRet(AddRawProfilerHook(pRawProfiler));
     }
     else
     {
-        CLogging::LogMessage(_T("Raw profiler module is not specified, skip loading."));
+        C_LOGMESSAGE(_T("Raw profiler module is not specified, skip loading."));
     }
 
     return S_OK;
@@ -1355,7 +1355,7 @@ HRESULT CProfilerManager::AppDomainCreationFinished(
     //Return if the appdomain didn't load correctly
     if (FAILED (hrStatus))
     {
-        CLogging::LogMessage(_T("AppDomainCreationFinished bailing out, FAILED hrStatus given"));
+        C_LOGMESSAGE(_T("AppDomainCreationFinished bailing out, FAILED hrStatus given"));
         return S_OK;
     };
 
@@ -1892,11 +1892,11 @@ HRESULT CProfilerManager::JITCompilationStarted(
                     CComBSTR name;
                     if (SUCCEEDED(pMethodInfo->GetFullName(&name)))
                     {
-                        CLogging::LogMessage(_T("JITCompilation FullMethodName %s"), name.m_str);
+                        C_LOGMESSAGE(_T("JITCompilation FullMethodName %s"), name.m_str);
                     }
                     else
                     {
-                        CLogging::LogMessage(_T("Method name failed"));
+                        C_LOGMESSAGE(_T("Method name failed"));
                     }
 
                     // Query if the instrumentation methods want to instrument and then have them actually instrument.
@@ -3498,7 +3498,7 @@ HRESULT CProfilerManager::ConstructModuleInfo(
     if (FAILED(hr) || hr == S_FALSE)
     {
         // If this module is resource only, don't continue to construct a module info.
-        CLogging::LogMessage(_T("%s is a metadata only assembly and will not be tracked with a module info instance."), wszModulePath.m_p);
+        C_LOGMESSAGE(_T("%s is a metadata only assembly and will not be tracked with a module info instance."), wszModulePath.m_p);
         return E_FAIL;
     }
 
@@ -3570,7 +3570,7 @@ HRESULT CProfilerManager::ConstructModuleInfo(
 HRESULT CProfilerManager::CreateMethodInfo(_In_ FunctionID functionId, _Out_ CMethodInfo** ppMethodInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CProfilerManager::CreateMethodInfo"));
+    C_LOGMESSAGE(_T("Starting CProfilerManager::CreateMethodInfo"));
 
     IfNullRetPointer(ppMethodInfo);
     *ppMethodInfo = NULL;
@@ -3584,7 +3584,7 @@ HRESULT CProfilerManager::CreateMethodInfo(_In_ FunctionID functionId, _Out_ CMe
     hr = m_pAppDomainCollection->GetModuleInfoById(moduleId, (IModuleInfo**)&pModuleInfo);
     if (FAILED(hr))
     {
-        CLogging::LogMessage(_T("CProfilerManager::CreateMethodInfo - no moduleinfo found. Probably a dynamic module %x"), moduleId);
+        C_LOGMESSAGE(_T("CProfilerManager::CreateMethodInfo - no moduleinfo found. Probably a dynamic module %x"), moduleId);
         return E_FAIL;
     }
 
@@ -3618,7 +3618,7 @@ HRESULT CProfilerManager::CreateMethodInfo(_In_ FunctionID functionId, _Out_ CMe
     }
 
 
-    CLogging::LogMessage(_T("CProfilerManager::CreateMethodInfo - creating new method info"));
+    C_LOGMESSAGE(_T("CProfilerManager::CreateMethodInfo - creating new method info"));
     pMethodInfo.Attach(new CMethodInfo(this, functionId, functionToken, classId, pModuleInfo, NULL));
 
     IfFailRet(pMethodInfo->Initialize(true, false));
@@ -3627,7 +3627,7 @@ HRESULT CProfilerManager::CreateMethodInfo(_In_ FunctionID functionId, _Out_ CMe
 
     *ppMethodInfo = pMethodInfo.Detach();
 
-    CLogging::LogMessage(_T("End CProfilerManager::CreateMethodInfo"));
+    C_LOGMESSAGE(_T("End CProfilerManager::CreateMethodInfo"));
 
     return S_OK;
 }
@@ -3637,7 +3637,7 @@ HRESULT CProfilerManager::CreateMethodInfo(_In_ FunctionID functionId, _Out_ CMe
 HRESULT CProfilerManager::CreateNewMethodInfo(_In_ FunctionID functionId, _Out_ CMethodInfo** ppMethodInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CProfilerManager::CreateNewMethodInfo"));
+    C_LOGMESSAGE(_T("Starting CProfilerManager::CreateNewMethodInfo"));
 
     IfNullRetPointer(ppMethodInfo);
     *ppMethodInfo = NULL;
@@ -3651,19 +3651,19 @@ HRESULT CProfilerManager::CreateNewMethodInfo(_In_ FunctionID functionId, _Out_ 
     hr = m_pAppDomainCollection->GetModuleInfoById(moduleId, (IModuleInfo**)&pModuleInfo);
     if (FAILED(hr))
     {
-        CLogging::LogMessage(_T("CProfilerManager::CreateNewMethodInfo - no method info found. Probably a dynamic module %x"), moduleId);
+        C_LOGMESSAGE(_T("CProfilerManager::CreateNewMethodInfo - no method info found. Probably a dynamic module %x"), moduleId);
         return E_FAIL;
     }
 
     CComPtr<CMethodInfo> pMethodInfo;
-    CLogging::LogMessage(_T("CProfilerManager::CreateNewMethodInfo - creating new method info"));
+    C_LOGMESSAGE(_T("CProfilerManager::CreateNewMethodInfo - creating new method info"));
     pMethodInfo.Attach(new CMethodInfo(this, functionId, functionToken, classId, pModuleInfo, NULL));
 
     IfFailRet(pMethodInfo->Initialize(false, false));
 
     *ppMethodInfo = pMethodInfo.Detach();
 
-    CLogging::LogMessage(_T("End CProfilerManager::CreateNewMethodInfo"));
+    C_LOGMESSAGE(_T("End CProfilerManager::CreateNewMethodInfo"));
 
     return S_OK;
 }
@@ -3691,7 +3691,7 @@ HRESULT CProfilerManager::RemoveMethodInfoFromMap(_In_ FunctionID functionId)
 HRESULT CProfilerManager::GetMethodInfoById(_In_ FunctionID functionId, _Out_ CMethodInfo** ppMethodInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CProfilerManager::GetMethodInfoById"));
+    C_LOGMESSAGE(_T("Starting CProfilerManager::GetMethodInfoById"));
     IfNullRetPointer(ppMethodInfo);
     *ppMethodInfo = NULL;
 
@@ -3703,11 +3703,11 @@ HRESULT CProfilerManager::GetMethodInfoById(_In_ FunctionID functionId, _Out_ CM
     }
     else
     {
-        CLogging::LogMessage(_T("CProfilerManager::GetMethodInfoById - No method info found"));
+        C_LOGMESSAGE(_T("CProfilerManager::GetMethodInfoById - No method info found"));
         return E_FAIL;
     }
 
-    CLogging::LogMessage(_T("End CProfilerManager::GetMethodInfoById"));
+    C_LOGMESSAGE(_T("End CProfilerManager::GetMethodInfoById"));
     return S_OK;
 }
 
@@ -3719,7 +3719,7 @@ HRESULT CProfilerManager::CreateMethodInfoForRejit(
     )
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CProfilerManager::CreateMethodInfoForRejit"));
+    C_LOGMESSAGE(_T("Starting CProfilerManager::CreateMethodInfoForRejit"));
 
     IfNullRetPointer(ppMethodInfo);
     *ppMethodInfo = NULL;
@@ -3727,7 +3727,7 @@ HRESULT CProfilerManager::CreateMethodInfoForRejit(
     CComPtr<CModuleInfo> pModuleInfo;
     IfFailRet(m_pAppDomainCollection->GetModuleInfoById(moduleId, (IModuleInfo**)&pModuleInfo));
 
-    CLogging::LogMessage(_T("CProfilerManager::CreateMethodInfoForRejit - creating new method info"));
+    C_LOGMESSAGE(_T("CProfilerManager::CreateMethodInfoForRejit - creating new method info"));
     CComPtr<CMethodInfo> pMethodInfo;
     pMethodInfo.Attach(new CMethodInfo(this, 0, methodToken, 0, pModuleInfo, pFunctionControl));
 
@@ -3737,7 +3737,7 @@ HRESULT CProfilerManager::CreateMethodInfoForRejit(
 
     *ppMethodInfo = pMethodInfo.Detach();
 
-    CLogging::LogMessage(_T("End CProfilerManager::CreateMethodInfoForRejit"));
+    C_LOGMESSAGE(_T("End CProfilerManager::CreateMethodInfoForRejit"));
 
     return S_OK;
 }
@@ -3786,7 +3786,7 @@ HRESULT CProfilerManager::CallBeforeInstrumentMethodOnInstrumentationMethods(
     {
         for (CComPtr<IInstrumentationMethod> pCurrInstrumentationMethod : toInstrument)
         {
-            CLogging::LogMessage(_T("Asking Instrumentation Method to instrument"));
+            C_LOGMESSAGE(_T("Asking Instrumentation Method to instrument"));
 
             IfFailRet(pCurrInstrumentationMethod->BeforeInstrumentMethod(pMethodInfo, isRejit));
         }
@@ -3809,7 +3809,7 @@ HRESULT CProfilerManager::CallInstrumentOnInstrumentationMethods(
     {
         for (CComPtr<IInstrumentationMethod> pCurrInstrumentationMethod : toInstrument)
         {
-            CLogging::LogMessage(_T("Asking Instrumentation Method to instrument"));
+            C_LOGMESSAGE(_T("Asking Instrumentation Method to instrument"));
 
             if (CLogging::AllowLogEntry(LoggingFlags_InstrumentationResults))
             {
@@ -3861,7 +3861,7 @@ HRESULT CProfilerManager::CallInstrumentOnInstrumentationMethods(
 
             hr = pCurrInstrumentationMethod->InstrumentMethod(pMethodInfo, isRejit);
 
-            CLogging::LogMessage(_T("Instrumentation Method finished instrumenting. Result hr is:. hr=%04x"), hr);
+            C_LOGMESSAGE(_T("Instrumentation Method finished instrumenting. Result hr is:. hr=%04x"), hr);
 
             // If any instrumentation method fails to instrument, stop instrumenting. This will cause the unchanged il to be used.
             IfFailRet(hr);
@@ -3896,7 +3896,7 @@ HRESULT CProfilerManager::GetInstrumentationMethod(_In_ REFGUID cslid, _Out_ IUn
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Start CProfilerManager::GetInstrumentationMethod"));
+    C_LOGMESSAGE(_T("Start CProfilerManager::GetInstrumentationMethod"));
     IfNullRetPointer(ppUnknown);
     *ppUnknown = nullptr;
 
@@ -3913,12 +3913,12 @@ HRESULT CProfilerManager::GetInstrumentationMethod(_In_ REFGUID cslid, _Out_ IUn
             IfFailRet((*it).first->GetRawInstrumentationMethod(&pRawInstrumentationMethod));
 
             IfFailRet(pRawInstrumentationMethod->QueryInterface(__uuidof(IUnknown), reinterpret_cast<LPVOID*>(ppUnknown)));
-            CLogging::LogMessage(_T("End CProfilerManager::GetInstrumentationMethod"));
+            C_LOGMESSAGE(_T("End CProfilerManager::GetInstrumentationMethod"));
             return S_OK;
         }
     }
 
-    CLogging::LogMessage(_T("End CProfilerManager::GetInstrumentationMethod"));
+    C_LOGMESSAGE(_T("End CProfilerManager::GetInstrumentationMethod"));
 
     return E_NOINTERFACE;
 }
@@ -3931,7 +3931,7 @@ HRESULT CProfilerManager::CallShouldInstrumentOnInstrumentationMethods(
     )
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Start CProfilerManager::CallShouldInstrumentOnInstrumentationMethods"));
+    C_LOGMESSAGE(_T("Start CProfilerManager::CallShouldInstrumentOnInstrumentationMethods"));
 
     vector<CComPtr<IInstrumentationMethod>> instrumentMethodVector;
     IfFailRet(CopyInstrumentationMethods(instrumentMethodVector));
@@ -3939,19 +3939,19 @@ HRESULT CProfilerManager::CallShouldInstrumentOnInstrumentationMethods(
     // Send event to instrumentation methods
     for (CComPtr<IInstrumentationMethod> pCurrInstrumentationMethod : instrumentMethodVector)
     {
-        CLogging::LogMessage(_T("Calling ShouldInstrumentMethod Instrumentation Method"));
+        C_LOGMESSAGE(_T("Calling ShouldInstrumentMethod Instrumentation Method"));
 
         BOOL bShouldInstrument = FALSE;
         hr = pCurrInstrumentationMethod->ShouldInstrumentMethod(pMethodInfo, isRejit, &bShouldInstrument);
 
-        CLogging::LogMessage(_T("ShouldInstrumentMethod returned value %04x. hr=%04x"), bShouldInstrument, hr);
+        C_LOGMESSAGE(_T("ShouldInstrumentMethod returned value %04x. hr=%04x"), bShouldInstrument, hr);
         if (bShouldInstrument)
         {
             pToInstrument->push_back(pCurrInstrumentationMethod);
         }
     }
 
-    CLogging::LogMessage(_T("End CProfilerManager::CallShouldInstrumentOnInstrumentationMethods"));
+    C_LOGMESSAGE(_T("End CProfilerManager::CallShouldInstrumentOnInstrumentationMethods"));
 
     return S_OK;
 }
@@ -3959,7 +3959,7 @@ HRESULT CProfilerManager::CallShouldInstrumentOnInstrumentationMethods(
 HRESULT CProfilerManager::CallOnInstrumentationComplete(_In_ IMethodInfo* pMethodInfo, _In_ BOOL isRejit)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Start CProfilerManager::CallOnInstrumentationComplete"));
+    C_LOGMESSAGE(_T("Start CProfilerManager::CallOnInstrumentationComplete"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -3976,7 +3976,7 @@ HRESULT CProfilerManager::CallOnInstrumentationComplete(_In_ IMethodInfo* pMetho
         }
     }
 
-    CLogging::LogMessage(_T("End CProfilerManager::CallOnInstrumentationComplete"));
+    C_LOGMESSAGE(_T("End CProfilerManager::CallOnInstrumentationComplete"));
     return hr;
 }
 
@@ -4014,7 +4014,7 @@ HRESULT CProfilerManager::CallAllowInlineOnInstrumentationMethods(
     )
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Start CProfilerManager::CallAllowInlineOnInstrumentationMethods"));
+    C_LOGMESSAGE(_T("Start CProfilerManager::CallAllowInlineOnInstrumentationMethods"));
 
     vector<CComPtr<IInstrumentationMethod>> methods;
     IfFailRet(CopyInstrumentationMethods(methods));
@@ -4037,7 +4037,7 @@ HRESULT CProfilerManager::CallAllowInlineOnInstrumentationMethods(
 
     *pbShouldInline = bShouldAllowInline;
 
-    CLogging::LogMessage(_T("End CProfilerManager::CallAllowInlineOnInstrumentationMethods"));
+    C_LOGMESSAGE(_T("End CProfilerManager::CallAllowInlineOnInstrumentationMethods"));
     return hr;
 }
 

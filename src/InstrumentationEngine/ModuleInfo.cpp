@@ -109,7 +109,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::Dispose()
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoById(_In_ FunctionID functionId, CMethodInfo** ppMethodInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CModuleInfo::GetMethodInfoById"));
+    C_LOGMESSAGE(_T("Starting CModuleInfo::GetMethodInfoById"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -120,14 +120,14 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoById(_In_ Func
 
     if (iter == m_methodInfos.end())
     {
-        CLogging::LogMessage(_T("CModuleInfo::GetMethodInfoById - Failed to find specified method %04x"), functionId);
+        C_LOGMESSAGE(_T("CModuleInfo::GetMethodInfoById - Failed to find specified method %04x"), functionId);
         return E_FAIL;
     }
 
     *ppMethodInfo = (iter->second);
     (*ppMethodInfo)->AddRef();
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetMethodInfoById"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetMethodInfoById"));
 
     return hr;
 }
@@ -135,7 +135,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoById(_In_ Func
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoByToken(_In_ mdToken methodToken, CMethodInfo** ppMethodInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CModuleInfo::GetMethodInfoByToken"));
+    C_LOGMESSAGE(_T("Starting CModuleInfo::GetMethodInfoByToken"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -146,14 +146,14 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoByToken(_In_ m
 
     if (iter == m_methodInfosByToken.end())
     {
-        CLogging::LogMessage(_T("CModuleInfo::GetMethodInfoByToken - Failed to find specified method %04x"), methodToken);
+        C_LOGMESSAGE(_T("CModuleInfo::GetMethodInfoByToken - Failed to find specified method %04x"), methodToken);
         return E_FAIL;
     }
 
     *ppMethodInfo = (iter->second);
     (*ppMethodInfo)->AddRef();
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetMethodInfoByToken"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetMethodInfoByToken"));
 
     return hr;
 }
@@ -161,7 +161,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoByToken(_In_ m
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::AddMethodInfo(_In_ FunctionID functionId, CMethodInfo* pMethodInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CModuleInfo::AddMethodInfo"));
+    C_LOGMESSAGE(_T("Starting CModuleInfo::AddMethodInfo"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -171,7 +171,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::AddMethodInfo(_In_ Function
     m_methodInfos[functionId] = pMethodInfo;
     m_methodInfosByToken[methodToken] = pMethodInfo;
 
-    CLogging::LogMessage(_T("End CModuleInfo::AddMethodInfo"));
+    C_LOGMESSAGE(_T("End CModuleInfo::AddMethodInfo"));
 
     return hr;
 }
@@ -179,7 +179,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::AddMethodInfo(_In_ Function
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::ReleaseMethodInfo(_In_ FunctionID functionId)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CModuleInfo::ReleaseMethodInfo"));
+    C_LOGMESSAGE(_T("Starting CModuleInfo::ReleaseMethodInfo"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -197,7 +197,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::ReleaseMethodInfo(_In_ Func
     m_methodInfos.erase(functionId);
     m_methodInfosByToken.erase(methodToken);
 
-    CLogging::LogMessage(_T("End CModuleInfo::ReleaseMethodInfo"));
+    C_LOGMESSAGE(_T("End CModuleInfo::ReleaseMethodInfo"));
 
     return hr;
 }
@@ -206,12 +206,12 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetModuleName(_Out_ BSTR* p
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetModuleName"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetModuleName"));
 
     IfNullRetPointer(pbstrModuleName);
     hr = m_bstrModuleName.CopyTo(pbstrModuleName);
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetModuleName"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetModuleName"));
 
     return hr;
 }
@@ -219,13 +219,13 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetModuleName(_Out_ BSTR* p
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetFullPath(_Out_ BSTR* pbstrFullPath)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetFullPath"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetFullPath"));
 
     IfNullRetPointer(pbstrFullPath);
 
     hr = m_bstrModulePath.CopyTo(pbstrFullPath);
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetFullPath"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetFullPath"));
 
     return hr;
 }
@@ -234,12 +234,12 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetFullPath(_Out_ BSTR* pbs
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetAssemblyInfo(_Out_ IAssemblyInfo** ppAssemblyInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetAssemblyInfo"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetAssemblyInfo"));
 
     IfNullRetPointer(ppAssemblyInfo);
     hr = m_pAssemblyInfo.CopyTo(ppAssemblyInfo);
 
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetAssemblyInfo"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetAssemblyInfo"));
 
     return hr;
 }
@@ -247,12 +247,12 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetAssemblyInfo(_Out_ IAsse
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetAppDomainInfo(_Out_ IAppDomainInfo** ppAppDomainInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetAppDomainInfo"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetAppDomainInfo"));
 
     IfNullRetPointer(ppAppDomainInfo);
     hr = m_pAppDomainInfo.CopyTo(ppAppDomainInfo);
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetAppDomainInfo"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetAppDomainInfo"));
 
     return hr;
 }
@@ -260,13 +260,13 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetAppDomainInfo(_Out_ IApp
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataImport(_Out_ IUnknown** ppMetaDataImport)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetMetaDataImport"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetMetaDataImport"));
 
     IfNullRetPointer(ppMetaDataImport);
 
     hr = m_pMetadataImport.CopyTo((IMetaDataImport2**)ppMetaDataImport);
 
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetMetaDataImport"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetMetaDataImport"));
 
     return hr;
 }
@@ -274,13 +274,13 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataImport(_Out_ IUn
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataAssemblyImport(_Out_ IUnknown** ppMetadataAssemblyImport)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetMetadataAssemblyImport"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetMetadataAssemblyImport"));
 
     IfNullRetPointer(ppMetadataAssemblyImport);
 
     hr = m_pMetadataAssemblyImport.CopyTo((IMetaDataAssemblyImport**)ppMetadataAssemblyImport);
 
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetMetadataAssemblyImport"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetMetadataAssemblyImport"));
 
     return hr;
 }
@@ -289,7 +289,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataAssemblyImport(_
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataEmit(_Out_ IUnknown** ppMetaDataEmit)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetMetadataEmit"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetMetadataEmit"));
     IfNullRetPointer(ppMetaDataEmit);
     *ppMetaDataEmit = NULL;
 
@@ -297,12 +297,12 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataEmit(_Out_ IUnkn
     {
         hr = m_pMetaDataEmit2.CopyTo((IMetaDataEmit2**)ppMetaDataEmit);
 
-        CLogging::LogMessage(_T("End CModuleInfo::GetMetadataEmit"));
+        C_LOGMESSAGE(_T("End CModuleInfo::GetMetadataEmit"));
         return hr;
     }
     else
     {
-        CLogging::LogMessage(_T("End CModuleInfo::GetMetadataEmit = returning E_FAIL as no IMetaDataEmit exists"));
+        C_LOGMESSAGE(_T("End CModuleInfo::GetMetadataEmit = returning E_FAIL as no IMetaDataEmit exists"));
         return E_FAIL;
     }
 }
@@ -310,7 +310,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataEmit(_Out_ IUnkn
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataAssemblyEmit(_Out_ IUnknown** ppMetaDataAssemblyEmit)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetMetaDataAssemblyEmit"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetMetaDataAssemblyEmit"));
     IfNullRetPointer(ppMetaDataAssemblyEmit);
     *ppMetaDataAssemblyEmit = NULL;
 
@@ -318,12 +318,12 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataAssemblyEmit(_Ou
     {
         hr = m_pMetaDataAssemblyEmit.CopyTo((IMetaDataAssemblyEmit**)ppMetaDataAssemblyEmit);
 
-        CLogging::LogMessage(_T("End CModuleInfo::GetMetaDataAssemblyEmit"));
+        C_LOGMESSAGE(_T("End CModuleInfo::GetMetaDataAssemblyEmit"));
         return hr;
     }
     else
     {
-        CLogging::LogMessage(_T("End CModuleInfo::GetMetaDataAssemblyEmit = returning E_FAIL as no IMetaDataAssemblyEmit exists"));
+        C_LOGMESSAGE(_T("End CModuleInfo::GetMetaDataAssemblyEmit = returning E_FAIL as no IMetaDataAssemblyEmit exists"));
         return E_FAIL;
     }
 }
@@ -331,12 +331,12 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMetaDataAssemblyEmit(_Ou
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetModuleID(_Out_ ModuleID* pModuleId)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetModuleID"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetModuleID"));
 
     IfNullRetPointer(pModuleId);
 
     *pModuleId = m_moduleID;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetModuleID"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetModuleID"));
 
     return hr;
 }
@@ -345,51 +345,51 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetModuleID(_Out_ ModuleID*
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMVID(_Out_ GUID* pguidMvid)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetMVID"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetMVID"));
 
     IfNullRetPointer(pguidMvid);
     *pguidMvid = m_mvid;
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetMVID"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetMVID"));
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetIsILOnly(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetIsILOnly"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetIsILOnly"));
 
     IfNullRetPointer(pbValue);
 
     *pbValue = m_bIsIlOnly;
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetIsILOnly"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetIsILOnly"));
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetIsMscorlib(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetIsMscorlib"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetIsMscorlib"));
 
     IfNullRetPointer(pbValue);
 
     *pbValue = m_bIsMscorlib;
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetIsMscorlib"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetIsMscorlib"));
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetIsDynamic(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetIsDynamic"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetIsDynamic"));
 
     IfNullRetPointer(pbValue);
 
     *pbValue = m_bIsDynamic;
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetIsDynamic"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetIsDynamic"));
     return hr;
 }
 
@@ -397,52 +397,52 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetIsLoadedFromDisk(_Out_ B
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetIsLoadedFromDisk"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetIsLoadedFromDisk"));
 
     IfNullRetPointer(pbValue);
 
     *pbValue = m_bIsLoadedFromDisk;
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetIsLoadedFromDisk"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetIsLoadedFromDisk"));
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetIsNgen(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetIsNgen"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetIsNgen"));
 
     IfNullRetPointer(pbValue);
 
     *pbValue = m_bIsNgen;
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetIsNgen"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetIsNgen"));
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetIsWinRT(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetIsWinRT"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetIsWinRT"));
 
     IfNullRetPointer(pbValue);
 
     *pbValue = m_bIsWinRT;
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetIsWinRT"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetIsWinRT"));
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetIs64bit(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetIs64bit"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetIs64bit"));
 
     IfNullRetPointer(pbValue);
 
     *pbValue = m_bIs64bit;
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetIs64bit"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetIs64bit"));
 
     return hr;
 }
@@ -450,13 +450,13 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetIs64bit(_Out_ BOOL* pbVa
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetImageBase(_Out_ LPCBYTE* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetImageBase"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetImageBase"));
 
     IfNullRetPointer(pbValue);
 
     *pbValue = m_pModuleBaseLoadAddress;
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetImageBase"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetImageBase"));
 
     return hr;
 }
@@ -464,19 +464,19 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetImageBase(_Out_ LPCBYTE*
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetCorHeader(_In_ DWORD cbValue, _Out_writes_(cbValue) BYTE* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetCorHeader"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetCorHeader"));
 
     IfNullRetPointer(pbValue);
 
 	if (m_pCorHeader == NULL)
 	{
-		CLogging::LogMessage(_T("Module has no cor header"));
+		C_LOGMESSAGE(_T("Module has no cor header"));
 		return E_FAIL;
 	}
 
     memcpy_s(pbValue, cbValue, m_pCorHeader, cbValue);
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetCorHeader"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetCorHeader"));
 
     return hr;
 }
@@ -485,7 +485,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetCorHeader(_In_ DWORD cbV
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetEntrypointToken(_Out_ DWORD* pdwEntrypointToken)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetEntrypointToken"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetEntrypointToken"));
     IfNullRetPointer(pdwEntrypointToken);
     *pdwEntrypointToken = mdTokenNil;
 
@@ -498,7 +498,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetEntrypointToken(_Out_ DW
         return E_FAIL;
     }
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetEntrypointToken"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetEntrypointToken"));
 
     return hr;
 }
@@ -507,7 +507,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetEntrypointToken(_Out_ DW
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetModuleVersion(_In_ DWORD cbValue, _Out_writes_(cbValue) BYTE* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::GetModuleVersion"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::GetModuleVersion"));
     IfNullRetPointer(pbValue);
 
     if (cbValue != sizeof(VS_FIXEDFILEINFO))
@@ -517,13 +517,13 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetModuleVersion(_In_ DWORD
     }
     if (m_pFixedFileVersion == NULL)
     {
-        CLogging::LogMessage(_T("CModuleInfo::GetModuleVersion - No file version available for this module."));
+        C_LOGMESSAGE(_T("CModuleInfo::GetModuleVersion - No file version available for this module."));
         return E_FAIL;
     }
 
     memcpy_s(pbValue, cbValue, m_pFixedFileVersion, sizeof(VS_FIXEDFILEINFO));
 
-    CLogging::LogMessage(_T("End CModuleInfo::GetModuleVersion"));
+    C_LOGMESSAGE(_T("End CModuleInfo::GetModuleVersion"));
 
     return hr;
 }
@@ -533,7 +533,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::RequestRejit(_In_ mdToken m
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Begin CModuleInfo::RequestRejit"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::RequestRejit"));
 
     CComPtr<ICorProfilerInfo> pRealProfilerInfo;
     IfFailRet(m_pProfilerManager->GetRealCorProfilerInfo(&pRealProfilerInfo));
@@ -563,7 +563,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::RequestRejit(_In_ mdToken m
 
     IfFailRet(pRealProfilerInfo4->RequestReJIT((ULONG)moduleIds.size(), moduleIds.data(), methodTokens.data()));
 
-    CLogging::LogMessage(_T("End CModuleInfo::RequestRejit"));
+    C_LOGMESSAGE(_T("End CModuleInfo::RequestRejit"));
 
     return S_OK;
 }
@@ -634,7 +634,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetModuleTypeFlags()
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::ReadModuleHeaders()
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CModuleInfo::ReadModuleHeaders"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::ReadModuleHeaders"));
 
     if (m_pModuleBaseLoadAddress == NULL)
     {
@@ -694,7 +694,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::ReadModuleHeaders()
     m_pCorHeader = pCLRHeader;
     m_tkEntrypoint = m_pCorHeader->EntryPointToken;
 
-    CLogging::LogMessage(_T("End CModuleInfo::ReadModuleHeaders"));
+    C_LOGMESSAGE(_T("End CModuleInfo::ReadModuleHeaders"));
     return hr;
 }
 
@@ -752,7 +752,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::ResolveRva(_In_ DWORD rva, 
 HRESULT MicrosoftInstrumentationEngine::CModuleInfo::DetermineIfIsMscorlib()
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("End CModuleInfo::DetermineIfIsMscorlib"));
+    C_LOGMESSAGE(_T("End CModuleInfo::DetermineIfIsMscorlib"));
 
     if (m_bstrModuleName.Length() > 0)
     {
@@ -766,7 +766,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::DetermineIfIsMscorlib()
         }
     }
 
-    CLogging::LogMessage(_T("End CModuleInfo::DetermineIfIsMscorlib"));
+    C_LOGMESSAGE(_T("End CModuleInfo::DetermineIfIsMscorlib"));
 
     return hr;
 }
@@ -777,7 +777,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::ReadFixedFileVersion()
 
 #ifndef PLATFORM_UNIX
     // TODO: (linux)
-    CLogging::LogMessage(_T("Begin CModuleInfo::ReadFixedFileVersion"));
+    C_LOGMESSAGE(_T("Begin CModuleInfo::ReadFixedFileVersion"));
 
     if (m_bIsLoadedFromDisk)
     {
@@ -805,10 +805,10 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::ReadFixedFileVersion()
     }
     else
     {
-        CLogging::LogMessage(_T("CModuleInfo::ReadFixedFileVersion - Skipping fixed file version due to in-memory module"));
+        C_LOGMESSAGE(_T("CModuleInfo::ReadFixedFileVersion - Skipping fixed file version due to in-memory module"));
     }
 
-    CLogging::LogMessage(_T("End CModuleInfo::ReadFixedFileVersion"));
+    C_LOGMESSAGE(_T("End CModuleInfo::ReadFixedFileVersion"));
 #endif
     return S_OK;
 }
@@ -909,18 +909,18 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::SetRejitMethodInfo(_In_ mdT
         std::unordered_map<mdMethodDef, CComPtr<CMethodInfo>>::iterator iter = m_methodInfosByToken.find(methodToken);
         if (iter != m_methodInfosByToken.end())
         {
-            CLogging::LogMessage(_T("CModuleInfo::SetRejitMethodInfo - method token already exists %04x. Overwriting"), methodToken);
+            C_LOGMESSAGE(_T("CModuleInfo::SetRejitMethodInfo - method token already exists %04x. Overwriting"), methodToken);
         }
         else
         {
-            CLogging::LogMessage(_T("CModuleInfo::SetRejitMethodInfo - adding new method token %04x."), methodToken);
+            C_LOGMESSAGE(_T("CModuleInfo::SetRejitMethodInfo - adding new method token %04x."), methodToken);
         }
 
         m_methodInfosByToken[methodToken] = pMethodInfo;
     }
     else
     {
-        CLogging::LogMessage(_T("CModuleInfo::SetRejitMethodInfo - erasing existing method token %04x."), methodToken);
+        C_LOGMESSAGE(_T("CModuleInfo::SetRejitMethodInfo - erasing existing method token %04x."), methodToken);
         m_methodInfosByToken.erase(methodToken);
     }
 
@@ -955,7 +955,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoById(_In_ Func
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CProfilerManager::GetMethodInfoById"));
+    C_LOGMESSAGE(_T("Starting CProfilerManager::GetMethodInfoById"));
 
     IfNullRetPointer(ppMethodInfo);
     *ppMethodInfo = NULL;
@@ -968,7 +968,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoById(_In_ Func
     mdToken methodToken;
     IfFailRet(pCorProfilerInfo->GetFunctionInfo(functionID, &classId, &moduleId, &methodToken));
 
-    CLogging::LogMessage(_T("CProfilerManager::GetMethodInfoById - creating new method info"));
+    C_LOGMESSAGE(_T("CProfilerManager::GetMethodInfoById - creating new method info"));
     CComPtr<CMethodInfo> pMethodInfo;
     pMethodInfo.Attach(new CMethodInfo(m_pProfilerManager, functionID, methodToken, classId, this, nullptr));
 
@@ -976,7 +976,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoById(_In_ Func
 
     *ppMethodInfo = pMethodInfo.Detach();
 
-    CLogging::LogMessage(_T("End CProfilerManager::GetMethodInfoById"));
+    C_LOGMESSAGE(_T("End CProfilerManager::GetMethodInfoById"));
 
     return S_OK;
 }
@@ -988,12 +988,12 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoByToken(_In_ m
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CProfilerManager::GetMethodInfoByToken"));
+    C_LOGMESSAGE(_T("Starting CProfilerManager::GetMethodInfoByToken"));
 
     IfNullRetPointer(ppMethodInfo);
     *ppMethodInfo = NULL;
 
-    CLogging::LogMessage(_T("CProfilerManager::GetMethodInfoByToken - creating new method info"));
+    C_LOGMESSAGE(_T("CProfilerManager::GetMethodInfoByToken - creating new method info"));
 
     CComPtr<CMethodInfo> pMethodInfo;
     pMethodInfo.Attach(new CMethodInfo(m_pProfilerManager, 0, methodToken, 0, this, nullptr));
@@ -1002,7 +1002,7 @@ HRESULT MicrosoftInstrumentationEngine::CModuleInfo::GetMethodInfoByToken(_In_ m
 
     *ppMethodInfo = pMethodInfo.Detach();
 
-    CLogging::LogMessage(_T("End CProfilerManager::GetMethodInfoByToken"));
+    C_LOGMESSAGE(_T("End CProfilerManager::GetMethodInfoByToken"));
 
     return S_OK;
 }

@@ -25,12 +25,12 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::Initialize(
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CExceptionSection::Initialize"));
+    C_LOGMESSAGE(_T("Starting CExceptionSection::Initialize"));
     IfNullRetPointer(pMethodHeader);
 
     if(((COR_ILMETHOD_TINY*)pMethodHeader)->IsTiny() || IsFlagClear(pMethodHeader->Fat.Flags, CorILMethod_MoreSects))
     {
-        CLogging::LogMessage(_T("CExceptionSection::Initialize - Method has no exception handlers"));
+        C_LOGMESSAGE(_T("CExceptionSection::Initialize - Method has no exception handlers"));
         return S_OK;;
     }
 
@@ -80,7 +80,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::Initialize(
 
     }
 
-    CLogging::LogMessage(_T("End CExceptionSection::Initialize"));
+    C_LOGMESSAGE(_T("End CExceptionSection::Initialize"));
 
     return hr;
 }
@@ -88,7 +88,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::Initialize(
 HRESULT MicrosoftInstrumentationEngine::CExceptionSection::CreateExceptionHeader(_Out_ BYTE** ppExceptionHeader, _Out_ DWORD* pcbExceptionHeader)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CExceptionSection::CreateExceptionHeader"));
+    C_LOGMESSAGE(_T("Starting CExceptionSection::CreateExceptionHeader"));
     IfNullRetPointer(ppExceptionHeader);
     IfNullRetPointer(pcbExceptionHeader);
     *ppExceptionHeader = NULL;
@@ -125,7 +125,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::CreateExceptionHeader
     *ppExceptionHeader = pBuffer.Detach();
     *pcbExceptionHeader = dwBufferSize;
 
-    CLogging::LogMessage(_T("End CExceptionSection::CreateExceptionHeader"));
+    C_LOGMESSAGE(_T("End CExceptionSection::CreateExceptionHeader"));
     return hr;
 }
 
@@ -133,20 +133,20 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::CreateExceptionHeader
 HRESULT MicrosoftInstrumentationEngine::CExceptionSection::GetMethodInfo(_Out_ IMethodInfo** ppMethodInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CExceptionSection::GetMethodInfo"));
+    C_LOGMESSAGE(_T("Starting CExceptionSection::GetMethodInfo"));
     IfNullRetPointer(ppMethodInfo);
 
     *ppMethodInfo = m_pMethodInfo;
     (*ppMethodInfo)->AddRef();
 
-    CLogging::LogMessage(_T("End CExceptionSection::GetMethodInfo"));
+    C_LOGMESSAGE(_T("End CExceptionSection::GetMethodInfo"));
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CExceptionSection::GetExceptionClauses(_Out_ IEnumExceptionClauses** ppEnumExceptionClauses)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CExceptionSection::GetExceptionClauses"));
+    C_LOGMESSAGE(_T("Starting CExceptionSection::GetExceptionClauses"));
 
     IfNullRetPointer(ppEnumExceptionClauses);
     *ppEnumExceptionClauses = NULL;
@@ -164,7 +164,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::GetExceptionClauses(_
 
     *ppEnumExceptionClauses = pEnumerator.Detach();
 
-    CLogging::LogMessage(_T("End CExceptionSection::GetExceptionClauses"));
+    C_LOGMESSAGE(_T("End CExceptionSection::GetExceptionClauses"));
 
     return hr;
 }
@@ -172,7 +172,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::GetExceptionClauses(_
 HRESULT MicrosoftInstrumentationEngine::CExceptionSection::AddExceptionClause(_In_ IExceptionClause* pExceptionClause)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CExceptionSection::AddExceptionClause"));
+    C_LOGMESSAGE(_T("Starting CExceptionSection::AddExceptionClause"));
 
     IfNullRetPointer(pExceptionClause);
 
@@ -182,7 +182,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::AddExceptionClause(_I
 
     m_exceptionClauses.push_back(pExceptionClause);
 
-    CLogging::LogMessage(_T("End CExceptionSection::AddExceptionClause"));
+    C_LOGMESSAGE(_T("End CExceptionSection::AddExceptionClause"));
 
     return hr;
 }
@@ -190,7 +190,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::AddExceptionClause(_I
 HRESULT MicrosoftInstrumentationEngine::CExceptionSection::RemoveExceptionClause(_In_ IExceptionClause* pExceptionClause)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CExceptionSection::RemoveExceptionClause"));
+    C_LOGMESSAGE(_T("Starting CExceptionSection::RemoveExceptionClause"));
     IfNullRetPointer(pExceptionClause);
 
     CCriticalSectionHolder lock(&m_cs);
@@ -204,7 +204,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::RemoveExceptionClause
         }
     }
 
-    CLogging::LogMessage(_T("End CExceptionSection::RemoveExceptionClause"));
+    C_LOGMESSAGE(_T("End CExceptionSection::RemoveExceptionClause"));
 
     return hr;
 }
@@ -212,12 +212,12 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::RemoveExceptionClause
 HRESULT MicrosoftInstrumentationEngine::CExceptionSection::RemoveAllExceptionClauses()
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CExceptionSection::RemoveAllExceptionClauses"));
+    C_LOGMESSAGE(_T("Starting CExceptionSection::RemoveAllExceptionClauses"));
     CCriticalSectionHolder lock(&m_cs);
 
     m_exceptionClauses.clear();
 
-    CLogging::LogMessage(_T("End CExceptionSection::RemoveAllExceptionClauses"));
+    C_LOGMESSAGE(_T("End CExceptionSection::RemoveAllExceptionClauses"));
 
     return hr;
 }
@@ -226,7 +226,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::RemoveAllExceptionCla
 HRESULT MicrosoftInstrumentationEngine::CExceptionSection::UpdateInstruction(_In_ CInstruction* pInstructionOld, _In_ CInstruction* pInstructionNew)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CExceptionSection::UpdateInstruction"));
+    C_LOGMESSAGE(_T("Starting CExceptionSection::UpdateInstruction"));
     IfNullRetPointer(pInstructionOld);
 
     CCriticalSectionHolder lock(&m_cs);
@@ -237,7 +237,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::UpdateInstruction(_In
         pClause->UpdateInstruction(pInstructionOld, pInstructionNew);
     }
 
-    CLogging::LogMessage(_T("End CExceptionSection::UpdateInstruction"));
+    C_LOGMESSAGE(_T("End CExceptionSection::UpdateInstruction"));
 
     return hr;
 }
@@ -254,7 +254,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::AddNewExceptionClause
     )
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CExceptionSection::CreateExceptionClause"));
+    C_LOGMESSAGE(_T("Starting CExceptionSection::CreateExceptionClause"));
     IfNullRetPointer(ppExceptionClause);
     *ppExceptionClause = NULL;
 
@@ -277,7 +277,7 @@ HRESULT MicrosoftInstrumentationEngine::CExceptionSection::AddNewExceptionClause
 
     *ppExceptionClause = pExceptionClause.Detach();
 
-    CLogging::LogMessage(_T("End CExceptionSection::CreateExceptionClause"));
+    C_LOGMESSAGE(_T("End CExceptionSection::CreateExceptionClause"));
 
     return hr;
 }

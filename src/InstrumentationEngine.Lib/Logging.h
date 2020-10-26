@@ -86,6 +86,10 @@ namespace MicrosoftInstrumentationEngine
         static HRESULT SetLogFilePath(_In_ LPCWSTR wszLogFilePath);
         static HRESULT SetLogFileLevel(_In_ LoggingFlags fileLogFlags);
 
+        static bool IsLoggingErrors() { return (s_cachedFlags & LoggingFlags::LoggingFlags_Errors) != 0; }
+        static bool IsLoggingMessages() { return (s_cachedFlags & LoggingFlags::LoggingFlags_Trace) != 0; }
+        static bool IsLoggingDumps() { return (s_cachedFlags & LoggingFlags::LoggingFlags_InstrumentationResults) != 0; }
+
     private:
         static HRESULT InitializeCore();
 
@@ -93,3 +97,7 @@ namespace MicrosoftInstrumentationEngine
         static void OnLoggingFlagsUpdated(_In_ const LoggingFlags& flags);
     };
 }
+
+#define C_LOGMESSAGE(Message, ...) if (CLogging::IsLoggingMessages()) { CLogging::LogMessage(Message, __VA_ARGS__); }
+#define C_LOGERROR(Error, ...) if (CLogging::IsLoggingErrors()) { CLogging::LogError(Error, __VA_ARGS__); }
+#define C_LOGDump(Dump, ...) if (CLogging::IsLoggingDumps()) { CLogging::LogDumpMessage(Dump, __VA_ARGS__); }

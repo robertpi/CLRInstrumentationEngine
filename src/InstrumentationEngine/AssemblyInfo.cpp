@@ -60,7 +60,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetAppDomainInfo(_Out_ IA
 HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::AddModuleInfo(_In_ CModuleInfo* pModuleInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CAssemblyInfo::AddModuleInfo"));
+    C_LOGMESSAGE(_T("Begin CAssemblyInfo::AddModuleInfo"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -75,7 +75,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::AddModuleInfo(_In_ CModul
         IfFailRet(HandleManifestModuleLoad());
     }
 
-    CLogging::LogMessage(_T("end CAssemblyInfo::AddModuleInfo"));
+    C_LOGMESSAGE(_T("end CAssemblyInfo::AddModuleInfo"));
 
     return hr;
 }
@@ -84,7 +84,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::HandleManifestModuleLoad(
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Begin CAssemblyInfo::HandleManifestModuleLoad"));
+    C_LOGMESSAGE(_T("Begin CAssemblyInfo::HandleManifestModuleLoad"));
 
     if (m_pManifestModule == NULL)
     {
@@ -105,7 +105,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::HandleManifestModuleLoad(
         IfFailRet(InitializePublicKeyToken());
     }
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::HandleManifestModuleLoad"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::HandleManifestModuleLoad"));
 
     return hr;
 }
@@ -114,7 +114,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::ModuleInfoUnloaded(_In_ C
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Begin CAssemblyInfo::ModuleInfoUnloaded"));
+    C_LOGMESSAGE(_T("Begin CAssemblyInfo::ModuleInfoUnloaded"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -123,7 +123,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::ModuleInfoUnloaded(_In_ C
 
     m_moduleInfos.erase(moduleId);
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::ModuleInfoUnloaded"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::ModuleInfoUnloaded"));
 
     return hr;
 }
@@ -131,14 +131,14 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::ModuleInfoUnloaded(_In_ C
 HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModuleCount(_Out_ ULONG* pcModuleInfos)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Begin CAssemblyInfo::GetModuleCount"));
+    C_LOGMESSAGE(_T("Begin CAssemblyInfo::GetModuleCount"));
     IfNullRetPointer(pcModuleInfos);
 
     CCriticalSectionHolder lock(&m_cs);
 
     *pcModuleInfos = ((ULONG)m_moduleInfos.size());
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::GetModuleCount"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::GetModuleCount"));
 
     return hr;
 }
@@ -146,7 +146,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModuleCount(_Out_ ULON
 HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModules(_In_ ULONG cModuleInfos, _Out_ IEnumModuleInfo** ppModuleInfos)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetModules"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetModules"));
 
     IfNullRetPointer(ppModuleInfos);
     *ppModuleInfos = NULL;
@@ -171,7 +171,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModules(_In_ ULONG cMo
     *ppModuleInfos = (IEnumModuleInfo*)pEnumerator;
     (*ppModuleInfos)->AddRef();
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::GetModules"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::GetModules"));
 
     return hr;
 }
@@ -182,7 +182,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModuleById(_In_ Module
     IfNullRetPointer(ppModuleInfo);
     *ppModuleInfo = NULL;
 
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetModuleById"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetModuleById"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -197,7 +197,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModuleById(_In_ Module
     *ppModuleInfo = iter->second;
     (*ppModuleInfo)->AddRef();
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::GetModuleById"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::GetModuleById"));
 
     return hr;
 }
@@ -208,7 +208,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModuleByMvid(_In_ GUID
     IfNullRetPointer(ppModuleInfo);
     *ppModuleInfo = NULL;
 
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetModuleByMvid"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetModuleByMvid"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -235,7 +235,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModuleByMvid(_In_ GUID
 
     IfFailRet(pEnumerator->Initialize(vecModules));
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::GetModuleByMvid"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::GetModuleByMvid"));
 
     return hr;
 }
@@ -246,7 +246,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModulesByName(_In_ BST
     IfNullRetPointer(ppEnumModuleInfo);
     *ppEnumModuleInfo = NULL;
 
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetModulesByName"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetModulesByName"));
 
     CCriticalSectionHolder lock(&m_cs);
 
@@ -277,7 +277,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModulesByName(_In_ BST
 
     IfFailRet(pEnumerator->Initialize(vecModules));
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::GetModulesByName"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::GetModulesByName"));
 
     return hr;
 }
@@ -302,20 +302,20 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetModuleForType(_In_ BST
 HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetManifestModule(_Out_ IModuleInfo** ppModuleInfo)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetManifestModule"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetManifestModule"));
 
     IfNullRetPointer(ppModuleInfo);
     *ppModuleInfo = NULL;
 
     if (m_pManifestModule == NULL)
     {
-        CLogging::LogMessage(_T("CAssemblyInfo::GetManifestModule - Why no manifest module?"));
+        C_LOGMESSAGE(_T("CAssemblyInfo::GetManifestModule - Why no manifest module?"));
         return E_FAIL;
     }
 
 	IfFailRet(m_pManifestModule.CopyTo(ppModuleInfo));
 
-    CLogging::LogMessage(_T("end CAssemblyInfo::GetManifestModule"));
+    C_LOGMESSAGE(_T("end CAssemblyInfo::GetManifestModule"));
 
     return hr;
 }
@@ -324,7 +324,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetPublicKey(_In_ ULONG c
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetPublicKey"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetPublicKey"));
 
     IfNullRetPointer(pbBytes);
     if (cbBytes != m_cbPublicKey)
@@ -334,7 +334,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetPublicKey(_In_ ULONG c
 
     memcpy_s(pbBytes, cbBytes, m_pPublicKey, m_cbPublicKey);
 
-    CLogging::LogMessage(_T("end CAssemblyInfo::GetPublicKey"));
+    C_LOGMESSAGE(_T("end CAssemblyInfo::GetPublicKey"));
 
     return hr;
 }
@@ -342,13 +342,13 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetPublicKey(_In_ ULONG c
 HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetPublicKeySize(_Out_ ULONG* pcbBytes)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetPublicKeySize"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetPublicKeySize"));
 
     IfNullRetPointer(pcbBytes);
 
     *pcbBytes = m_cbPublicKey;
 
-    CLogging::LogMessage(_T("end CAssemblyInfo::GetPublicKeySize"));
+    C_LOGMESSAGE(_T("end CAssemblyInfo::GetPublicKeySize"));
 
     return hr;
 }
@@ -356,7 +356,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetPublicKeySize(_Out_ UL
 HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetPublicKeyToken(_Out_ BSTR* pbstrPublicKeyToken)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetPublicKeyToken"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetPublicKeyToken"));
     IfNullRetPointer(pbstrPublicKeyToken);
 
     if (!m_publicKeyTokenInitialized)
@@ -367,7 +367,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetPublicKeyToken(_Out_ B
 
     IfFailRet(m_bstrPublicKeyToken.CopyTo(pbstrPublicKeyToken));
 
-    CLogging::LogMessage(_T("end CAssemblyInfo::GetPublicKeyToken"));
+    C_LOGMESSAGE(_T("end CAssemblyInfo::GetPublicKeyToken"));
 
     return hr;
 }
@@ -376,11 +376,11 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetID(_Out_ AssemblyID* p
 {
     HRESULT hr = S_OK;
     IfNullRetPointer(pAssemblyId);
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetID"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetID"));
 
     *pAssemblyId = m_assemblyId;
 
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetID"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetID"));
 
     return hr;
 }
@@ -389,11 +389,11 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetName(_Out_ BSTR* pbstr
 {
     HRESULT hr = S_OK;
     IfNullRetPointer(pbstrName);
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetName"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetName"));
 
 	IfFailRet(m_bstrAssemblyName.CopyTo(pbstrName));
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::GetName"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::GetName"));
 
     return hr;
 }
@@ -402,17 +402,17 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::GetMetaDataToken(_Out_ DW
 {
     HRESULT hr = S_OK;
     IfNullRetPointer(pdwToken);
-    CLogging::LogMessage(_T("Starting CAssemblyInfo::GetMetaDataToken"));
+    C_LOGMESSAGE(_T("Starting CAssemblyInfo::GetMetaDataToken"));
 
     if (m_tkAssembly == mdTokenNil)
     {
-        CLogging::LogMessage(_T("CAssemblyInfo::GetMetaDataToken - token is mdTokenNil."));
+        C_LOGMESSAGE(_T("CAssemblyInfo::GetMetaDataToken - token is mdTokenNil."));
         return E_FAIL;
     }
 
     *pdwToken = m_tkAssembly;
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::GetMetaDataToken"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::GetMetaDataToken"));
 
     return hr;
 }
@@ -428,14 +428,14 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::InitializePublicKeyToken(
     {
         return S_OK;
     }
-    CLogging::LogMessage(_T("Begin CAssemblyInfo::InitializePublicKeyToken"));
+    C_LOGMESSAGE(_T("Begin CAssemblyInfo::InitializePublicKeyToken"));
 
     m_publicKeyTokenInitialized = true;
 
     // Check if there is a public key for this assembly
     if (!m_pPublicKey || !m_cbPublicKey)
     {
-        CLogging::LogMessage(_T("CAssemblyInfo::InitializePublicKeyToken - No public key for assembly"));
+        C_LOGMESSAGE(_T("CAssemblyInfo::InitializePublicKeyToken - No public key for assembly"));
         return S_FALSE;
     }
 
@@ -475,7 +475,7 @@ HRESULT MicrosoftInstrumentationEngine::CAssemblyInfo::InitializePublicKeyToken(
 
     m_bstrPublicKeyToken = wszPublicKeyToken;
 
-    CLogging::LogMessage(_T("End CAssemblyInfo::InitializePublicKeyToken"));
+    C_LOGMESSAGE(_T("End CAssemblyInfo::InitializePublicKeyToken"));
 
 #endif
 

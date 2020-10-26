@@ -24,7 +24,7 @@ HRESULT MicrosoftInstrumentationEngine::CTypeCreator::FromCorElement(_In_ CorEle
     IfNullRetPointer(ppType);
     *ppType = nullptr;
 
-    CLogging::LogMessage(_T("Starting CTypeCreator::FromCorElement"));
+    C_LOGMESSAGE(_T("Starting CTypeCreator::FromCorElement"));
 
     switch (type)
     {
@@ -57,13 +57,13 @@ HRESULT MicrosoftInstrumentationEngine::CTypeCreator::FromCorElement(_In_ CorEle
         }
     }
 
-    CLogging::LogMessage(_T("End CTypeCreator::FromCorElement"));
+    C_LOGMESSAGE(_T("End CTypeCreator::FromCorElement"));
 
     return E_NOTIMPL;
 }
 HRESULT MicrosoftInstrumentationEngine::CTypeCreator::FromSignature(_In_ DWORD cbBuffer, _In_ const BYTE* pCorSignature, _Out_ IType ** ppType, _Out_opt_ DWORD* pdwSigSize)
 {
-    CLogging::LogMessage(_T("Starting CTypeCreator::FromSignature"));
+    C_LOGMESSAGE(_T("Starting CTypeCreator::FromSignature"));
 
     IfNullRetPointer(pCorSignature);
     IfNullRetPointer(pdwSigSize);
@@ -326,7 +326,7 @@ HRESULT MicrosoftInstrumentationEngine::CTypeCreator::FromSignature(_In_ DWORD c
         hr = E_FAIL;
     }
 
-    CLogging::LogMessage(_T("End CTypeCreator::FromSignature"));
+    C_LOGMESSAGE(_T("End CTypeCreator::FromSignature"));
     return hr;
 }
 

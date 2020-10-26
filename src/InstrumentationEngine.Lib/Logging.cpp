@@ -44,8 +44,8 @@ void CLogging::LogMessage(_In_ const WCHAR* wszMessage, ...)
 {
     IfNotInitRet(s_initialize);
 
-    LoggingFlags flag;
-    if (SUCCEEDED(GetLoggingFlags(&flag)) && (flag & LoggingFlags_Trace) != 0)
+    LoggingFlags flag = s_cachedFlags;
+    if ((flag & LoggingFlags_Trace) != 0)
     {
         va_list argptr;
         va_start(argptr, wszMessage);
@@ -59,8 +59,8 @@ void CLogging::LogError(_In_ const WCHAR* wszError, ...)
 {
     IfNotInitRet(s_initialize);
 
-    LoggingFlags flag;
-    if (SUCCEEDED(GetLoggingFlags(&flag)) && (flag & LoggingFlags_Errors) != 0)
+    LoggingFlags flag = s_cachedFlags;
+    if ((flag & LoggingFlags_Errors) != 0)
     {
         va_list argptr;
         va_start(argptr, wszError);
@@ -74,8 +74,8 @@ void CLogging::LogDumpMessage(_In_ const WCHAR* wszMessage, ...)
 {
     IfNotInitRet(s_initialize);
 
-    LoggingFlags flag;
-    if (SUCCEEDED(GetLoggingFlags(&flag)) && (flag & LoggingFlags_InstrumentationResults) != 0)
+    LoggingFlags flag = s_cachedFlags;
+    if ((flag & LoggingFlags_InstrumentationResults) != 0)
     {
         va_list argptr;
         va_start(argptr, wszMessage);

@@ -31,7 +31,7 @@ HRESULT MicrosoftInstrumentationEngine::CSingleRetDefaultInstrumentation::ApplyS
 {
     HRESULT hr = S_OK;
 
-    CLogging::LogMessage(_T("Starting CSingleRetDefaultInstrumentation::ApplySingleRetDefaultInstrumentation"));
+    C_LOGMESSAGE(_T("Starting CSingleRetDefaultInstrumentation::ApplySingleRetDefaultInstrumentation"));
 
     CComPtr<IMethodInfo> pMethodInfo;
     IfFailRet(m_pInstructionGraph->GetMethodInfo(&pMethodInfo));
@@ -44,12 +44,12 @@ HRESULT MicrosoftInstrumentationEngine::CSingleRetDefaultInstrumentation::ApplyS
     {
         // the original method does not have any replacable ret instructions.
         // This can happen when there's endless loop, or the function ends in throw
-        CLogging::LogMessage(_T("CSingleRetDefaultInstrumentation::ApplySingleRetDefaultInstrumentation - function contains no replacable ret instructions"));
+        C_LOGMESSAGE(_T("CSingleRetDefaultInstrumentation::ApplySingleRetDefaultInstrumentation - function contains no replacable ret instructions"));
         return S_OK;
     }
     else if (retInstructions.size() == 1)
     {
-        CLogging::LogMessage(_T("CSingleRetDefaultInstrumentation::ApplySingleRetDefaultInstrumentation - function only contains a single replacable ret instruction. No transform will be applied"));
+        C_LOGMESSAGE(_T("CSingleRetDefaultInstrumentation::ApplySingleRetDefaultInstrumentation - function only contains a single replacable ret instruction. No transform will be applied"));
         return S_OK;
     }
 
@@ -113,7 +113,7 @@ HRESULT MicrosoftInstrumentationEngine::CSingleRetDefaultInstrumentation::ApplyS
     }
 
     m_pJumpTarget = pBranchTarget;
-    CLogging::LogMessage(_T("End CSingleRetDefaultInstrumentation::ApplySingleRetDefaultInstrumentation"));
+    C_LOGMESSAGE(_T("End CSingleRetDefaultInstrumentation::ApplySingleRetDefaultInstrumentation"));
 
     return hr;
 }
