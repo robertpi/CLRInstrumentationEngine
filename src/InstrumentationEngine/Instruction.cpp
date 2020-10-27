@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "Instruction.h"
+#include "BranchTargetInfo.h"
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::LogInstruction(_In_ BOOL ignoreTest)
 {
@@ -1168,6 +1169,7 @@ HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::SetBranchTarget(_In_
     IfNullRetPointer(pInstruction);
 
     m_pBranchTarget = (CInstruction*)pInstruction;
+    IfFailRet(CBranchTargetInfo::SetBranchTarget(this, (CInstruction*)pInstruction));
 
     if (m_pBranchTarget == nullptr)
     {
@@ -1292,6 +1294,7 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::SetBranchTarget(_In_
     CLogging::LogMessage(_T("Starting CSwitchInstruction::SetBranchTarget"));
 
     m_branchTargets[index] = (CInstruction*)(pTarget);
+    CBranchTargetInfo::SetBranchTarget(this, (CInstruction*)(pTarget));
 
     CLogging::LogMessage(_T("End CSwitchInstruction::SetBranchTarget"));
 
@@ -1790,6 +1793,13 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::Disconnect()
     {
         m_pOriginalNextInstruction.Release();
     }
+
+    CComPtr<CBranchTargetInfo> pBranchTargetInfo;
+    if (SUCCEEDED(CBranchTargetInfo::GetInstance(this, &pBranchTargetInfo)))
+    {
+        pBranchTargetInfo->Disconnect();
+    }
+
     return S_OK;
 }
 

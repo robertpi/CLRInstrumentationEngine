@@ -434,6 +434,8 @@ namespace MicrosoftInstrumentationEngine
     public:
         constexpr CInstruction* GetBranchTargetInternal() { return m_pBranchTarget.p; }
 
+        void ReplaceTarget(CInstruction* pInstruction) { m_pBranchTarget = pInstruction; }
+
     protected:
         virtual HRESULT Disconnect() override;
     };
