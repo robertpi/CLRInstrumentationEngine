@@ -44,6 +44,8 @@ namespace InstrEngineTests
         // startup to allow attaching a debugger.
         private static bool ThrowMessageBoxAtStartup = false;
 
+        private static bool WaitForDebugger = false;
+
         private static bool BinaryRecompiled = false;
 
         // Enable ref recording to track down memory leaks. For debug only.
@@ -98,6 +100,11 @@ namespace InstrEngineTests
             if (ThrowMessageBoxAtStartup)
             {
                 psi.EnvironmentVariables.Add("MicrosoftInstrumentationEngine_MessageboxAtAttach", @"1");
+            }
+
+            if (WaitForDebugger)
+            {
+                psi.EnvironmentVariables.Add("MicrosoftInstrumentationEngine_DebugWait", @"1");
             }
 
             if (TestParameters.DisableMethodSignatureValidation)
