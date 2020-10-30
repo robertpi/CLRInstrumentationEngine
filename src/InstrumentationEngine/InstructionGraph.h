@@ -5,6 +5,7 @@
 
 #include "DataContainer.h"
 #include "MethodInfo.h"
+#include "BranchTargetInfo.h"
 
 using namespace ATL;
 
@@ -43,6 +44,8 @@ namespace MicrosoftInstrumentationEngine
 
         bool m_bAreInstructionsStale;
 
+        CBranchTargetInfo m_branchTargetInfo;
+
     public:
         DEFINE_DELEGATED_REFCOUNT_ADDREF(CInstructionGraph);
         DEFINE_DELEGATED_REFCOUNT_RELEASE(CInstructionGraph);
@@ -79,6 +82,9 @@ namespace MicrosoftInstrumentationEngine
         constexpr CInstruction* FirstInstructionInternal() { return m_pFirstInstruction.p; }
         constexpr CInstruction* OriginalFirstInstructionInternal() { return m_pOrigFirstInstruction.p; }
         HRESULT RefreshInstructions();
+        HRESULT SetBranchTarget(_In_ CInstruction* pBranch, _In_ CInstruction* pTarget);
+        HRESULT RetargetBranches(_In_ CInstruction* pOriginal, _In_ CInstruction* pNew);
+        bool IsConnected() { return m_branchTargetInfo.IsConnected(); }
 
         // IInstructionGraph methods
     public:

@@ -1,119 +1,69 @@
 #include "stdafx.h"
 #include "refcount.h"
-#include "Instruction.h"
 #include "BranchTargetInfo.h"
+#include "Instruction.h"
 
 namespace MicrosoftInstrumentationEngine
 {
-    CBranchTargetInfo::CBranchTargetInfo(_In_ CInstruction* pInstruction) : m_pInstruction(pInstruction)
-    {
-
-    }
-
-    HRESULT CBranchTargetInfo::GetInstance(CInstruction* pInstruction, CBranchTargetInfo** ppResult)
-    {
-        IfNullRet(pInstruction);
-        IfNullRet(ppResult);
-
-        const GUID* uuid = &__uuidof(CBranchTargetInfo);
-        CComPtr<IUnknown> pUnknown;
-        HRESULT hr;
-        // Don't assert, it is common for there to not be target info.
-        IfFailRetNoLog(pInstruction->GetDataItem(uuid, uuid, &pUnknown));
-        CComQIPtr<CBranchTargetInfo> pTargetInfo = pUnknown;
-
-        IfFalseRet(pTargetInfo != nullptr, E_UNEXPECTED);
-        *ppResult = pTargetInfo.Detach();
-
-        return S_OK;
-    }
-
-    HRESULT CBranchTargetInfo::GetOrCreateInstance(CInstruction* pInstruction, CBranchTargetInfo** ppResult)
-    {
-        IfNullRet(pInstruction);
-        IfNullRet(ppResult);
-        if (!SUCCEEDED(GetInstance(pInstruction, ppResult)))
-        {
-            CComPtr<CBranchTargetInfo> pResult;
-            pResult.Attach(new CBranchTargetInfo(pInstruction));
-            const GUID* uuid = &__uuidof(CBranchTargetInfo);
-            pInstruction->SetDataItem(uuid, uuid, pResult);
-            *ppResult = pResult.Detach();
-        }
-
-        return S_OK;
-    }
-
     HRESULT CBranchTargetInfo::SetBranchTarget(_In_ CInstruction* pBranch, _In_ CInstruction* pTarget)
     {
         IfNullRet(pBranch);
         IfNullRet(pTarget);
 
-        HRESULT hr;
-        CComPtr<CBranchTargetInfo> pInfo;
-        IfFailRet(CBranchTargetInfo::GetOrCreateInstance(pTarget, &pInfo));
-        pInfo.p->m_branches.emplace(pBranch);
+        if (m_targetMap.find(pTarget) == m_targetMap.end())
+        {
+            m_targetMap[pTarget] = {};
+        }
+
+        m_targetMap[pTarget].emplace(pBranch);
+
         return S_OK;
     }
 
-    HRESULT CBranchTargetInfo::RetargetBranches(CInstruction* pOriginalInstruction, CInstruction* pNewInstruction)
+    HRESULT CBranchTargetInfo::RetargetBranches(_In_ CInstruction* pOriginalInstruction, _In_ CInstruction* pNewInstruction)
     {
         IfNullRet(pOriginalInstruction);
         IfNullRet(pNewInstruction);
 
-        CComPtr<CBranchTargetInfo> pTargetInfo;
-        if (SUCCEEDED(CBranchTargetInfo::GetInstance(pOriginalInstruction, &pTargetInfo)))
+        if (m_targetMap.find(pOriginalInstruction) == m_targetMap.end())
         {
-            return pTargetInfo->Retarget(pNewInstruction);
+            return S_OK;
         }
-        return S_OK;
-    }
 
-    HRESULT CBranchTargetInfo::Retarget(CInstruction* pNewInstruction)
-    {
-        HRESULT hr = S_OK;
-        IfFailRet(Disconnect());
+        HRESULT hr;
 
-        for (const CComPtr<CInstruction>&branch : m_branches)
+        for (CInstruction* branch : m_targetMap[pOriginalInstruction])
         {
             if (branch->GetIsBranchInternal())
             {
-                CBranchInstruction* pBranch = (CBranchInstruction*)branch.p;
+                CBranchInstruction* pBranch = (CBranchInstruction*)branch;
 
                 CInstruction* pBranchTarget = pBranch->GetBranchTargetInternal();
 
-                // If the branch target is the original instruction AND the branch is not the new instruction,
-                // update it. Note the second condition is important because for things like leave instructions,
-                // often the next instruction is the branch target and resetting this would create an infinite loop.
-                //pBranch->ReplaceTarget(pNewInstruction);
-
-                if (pBranchTarget == pNewInstruction)
-                {
-                    // reset it back to the original instruction.
-                    IfFailRet(pBranch->SetBranchTarget(m_pInstruction));
-                }
-                else
-                {
-                    IfFailRet(pBranch->SetBranchTarget(pNewInstruction));
-                }
+                IfFailRet(pBranch->SetBranchTarget(pNewInstruction));
             }
             else if (branch->GetIsSwitchInternal())
             {
                 CComPtr<ISwitchInstruction> pSwitch;
                 IfFailRet(branch->QueryInterface(__uuidof(ISwitchInstruction), (LPVOID*)&pSwitch));
-                IfFailRet(pSwitch->ReplaceBranchTarget(m_pInstruction, pNewInstruction));
+                IfFailRet(pSwitch->ReplaceBranchTarget(pOriginalInstruction, pNewInstruction));
             }
         }
+
+        m_targetMap.erase(pOriginalInstruction);
 
         return S_OK;
     }
 
-    HRESULT CBranchTargetInfo::Disconnect()
-    {
-        const GUID* uuid = &__uuidof(CBranchTargetInfo);
 
-        // break cycles.
-        return m_pInstruction->SetDataItem(uuid, uuid, nullptr);
+    void CBranchTargetInfo::Disconnect()
+    {
+        m_targetMap.clear();
+    }
+    
+    bool CBranchTargetInfo::IsConnected()
+    {
+        return m_targetMap.size() > 0;
     }
 }
 

@@ -53,6 +53,9 @@ MicrosoftInstrumentationEngine::CInstructionGraph::~CInstructionGraph()
     {
         CCriticalSectionHolder lock(&m_cs);
 
+        // ensure that all of the branch targets are disconnected before
+        // disconnecting the instructions.
+        m_branchTargetInfo.Disconnect();
         CInstruction* pInstr = m_pFirstInstruction;
         while (pInstr != nullptr)
         {
@@ -940,7 +943,10 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::InsertBeforeAndRetarg
 
     // Search the graph for any branch whose branch target is the old instruction. Set the branch target
     // to the new instruction.
-    IfFailRet(CBranchTargetInfo::RetargetBranches(pInstrOrig, pInstrNew));
+    if (!pInstrNew->GetIsBranchInternal())
+    {
+        IfFailRet(m_branchTargetInfo.RetargetBranches(pInstrOrig, pInstrNew));
+    }
 
     // Search the exception clauses for anything that points to the old instruction
     // Set that target to the new instruction
@@ -1242,6 +1248,18 @@ HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::RefreshInstructions()
 
     return S_OK;
 }
+
+HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::SetBranchTarget(_In_ CInstruction* pBranch, _In_ CInstruction* pTarget)
+{
+    return m_branchTargetInfo.SetBranchTarget(pBranch, pTarget);
+}
+
+HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::RetargetBranches(_In_ CInstruction* pOriginal, _In_ CInstruction* pNew)
+{
+    return m_branchTargetInfo.RetargetBranches(pOriginal, pNew);
+}
+
+
 
 // true if CreateBaseline has previously been called.
 HRESULT MicrosoftInstrumentationEngine::CInstructionGraph::HasBaselineBeenSet(_Out_ BOOL* pHasBaselineBeenSet)

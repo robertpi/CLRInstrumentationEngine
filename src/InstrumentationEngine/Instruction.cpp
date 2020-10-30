@@ -1169,7 +1169,7 @@ HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::SetBranchTarget(_In_
     IfNullRetPointer(pInstruction);
 
     m_pBranchTarget = (CInstruction*)pInstruction;
-    IfFailRet(CBranchTargetInfo::SetBranchTarget(this, (CInstruction*)pInstruction));
+    IfFailRet(m_pGraph->SetBranchTarget(this, m_pBranchTarget));
 
     if (m_pBranchTarget == nullptr)
     {
@@ -1294,7 +1294,7 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::SetBranchTarget(_In_
     CLogging::LogMessage(_T("Starting CSwitchInstruction::SetBranchTarget"));
 
     m_branchTargets[index] = (CInstruction*)(pTarget);
-    CBranchTargetInfo::SetBranchTarget(this, (CInstruction*)(pTarget));
+    IfFailRet(m_pGraph->SetBranchTarget(this, (CInstruction*)(pTarget)));
 
     CLogging::LogMessage(_T("End CSwitchInstruction::SetBranchTarget"));
 
@@ -1777,6 +1777,10 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetSignatureInfoFromCallTo
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::Disconnect()
 {
+    // This function should only be called by the owning graph during
+    // its own disconnecting.
+    IfFalseRet((!m_pGraph->IsConnected()), E_UNEXPECTED);
+
     if (m_pPreviousInstruction)
     {
         m_pPreviousInstruction.Release();
@@ -1792,12 +1796,6 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::Disconnect()
     if (m_pOriginalNextInstruction)
     {
         m_pOriginalNextInstruction.Release();
-    }
-
-    CComPtr<CBranchTargetInfo> pBranchTargetInfo;
-    if (SUCCEEDED(CBranchTargetInfo::GetInstance(this, &pBranchTargetInfo)))
-    {
-        pBranchTargetInfo->Disconnect();
     }
 
     return S_OK;
