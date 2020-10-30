@@ -112,9 +112,6 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::InstructionFromBytes(
 {
     HRESULT hr = S_OK;
     *ppInstruction = NULL;
-
-    CLogging::LogMessage(_T("Starting CInstruction::InstructionFromBytes"));
-
     ILOrdinalOpcode opcode;
     CInstruction::OrdinalOpcodeFromBytes(pCode, pEndOfCode, &opcode);
 
@@ -193,16 +190,11 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::InstructionFromBytes(
                 }
 
                 default:
-                {
-                    CLogging::LogMessage(_T("CInstruction::InstructionFromBytes - Incorrect operand type"));
-                    return E_FAIL;
+                {                    return E_FAIL;
                 }
             }
         }
     }
-
-    CLogging::LogMessage(_T("End CInstruction::InstructionFromBytes"));
-
     return S_OK;
 }
 
@@ -363,56 +355,37 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::SetIsRemoved()
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOffset(_Out_ DWORD* pdwOffset)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetOffset"));
-
     IfNullRetPointer(pdwOffset);
     IfFailRet(EnsureGraphUpdated());
     *pdwOffset = m_offset;
-
-    CLogging::LogMessage(_T("End CInstruction::GetOffset"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOriginalOffset(_Out_ DWORD* pdwOffset)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetOriginalOffset"));
-
     IfNullRetPointer(pdwOffset);
     IfFailRet(EnsureGraphUpdated());
     *pdwOffset = m_origOffset;
-
-    CLogging::LogMessage(_T("End CInstruction::GetOriginalOffset"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOpCodeName(_Out_ BSTR* pbstrName)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetOpCodeName"));
-
     IfNullRetPointer(pbstrName);
 
     CComBSTR bstrOpCodeName = s_ilOpcodeInfo[m_opcode].m_name;
     *pbstrName = bstrOpCodeName.Detach();
-
-    CLogging::LogMessage(_T("End CInstruction::GetOpCodeName"));
-
     return S_OK;
 }
 
  HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOpCode(_Out_ ILOrdinalOpcode* pOpCode)
  {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetOpCode"));
     IfNullRetPointer(pOpCode);
 
     *pOpCode = m_opcode;
-
-    CLogging::LogMessage(_T("End CInstruction::GetOpCode"));
-
     return S_OK;
  }
 
@@ -420,78 +393,54 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOpCodeName(_Out_ BSTR* 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetAlternateOrdinalOpcode(_Out_ ILOrdinalOpcode* pAlternative)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetAlternateOrdinalOpcode"));
     IfNullRetPointer(pAlternative);
 
     *pAlternative = s_ilOpcodeInfo[m_opcode].m_alternate;
-
-    CLogging::LogMessage(_T("End CInstruction::GetAlternateOrdinalOpcode"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOpcodeFlags(_Out_ ILOpcodeFlags* pFlags)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetAlternateOrdinalOpcode"));
     IfNullRetPointer(pFlags);
 
     *pFlags = s_ilOpcodeInfo[m_opcode].m_flags;
-
-    CLogging::LogMessage(_T("End CInstruction::GetAlternateOrdinalOpcode"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetInstructionLength(_Out_ DWORD* pdwLength)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetInstructionLength "));
     IfNullRetPointer(pdwLength);
 
     *pdwLength = s_ilOpcodeInfo[m_opcode].m_opcodeLength + s_ilOpcodeInfo[m_opcode].m_operandLength;
-
-    CLogging::LogMessage(_T("End CInstruction::GetInstructionLength "));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOpcodeLength(_Out_ DWORD* pdwLength)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetOpcodeLength"));
     IfNullRetPointer(pdwLength);
 
     *pdwLength = s_ilOpcodeInfo[m_opcode].m_opcodeLength;
-
-    CLogging::LogMessage(_T("End CInstruction::GetOpcodeLength"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOperandType(_Out_ ILOperandType* pType)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetOpcodeLength"));
     IfNullRetPointer(pType);
 
     *pType = s_ilOpcodeInfo[m_opcode].m_type;
-
-    CLogging::LogMessage(_T("End CInstruction::GetOpcodeLength"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOperandLength(_Out_ DWORD* pdwLength)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetOpcodeLength"));
     IfNullRetPointer(pdwLength);
 
     *pdwLength = s_ilOpcodeInfo[m_opcode].m_operandLength;
-
-    CLogging::LogMessage(_T("End CInstruction::GetOpcodeLength"));
-
     return S_OK;
 }
 
@@ -499,13 +448,9 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOperandLength(_Out_ DWO
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetIsNew(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetIsNew"));
     IfNullRetPointer(pbValue);
 
     *pbValue = m_instructionGeneration == InstructionGeneration::Generation_New ? TRUE : FALSE;
-
-    CLogging::LogMessage(_T("End CInstruction::GetIsNew"));
-
     return S_OK;
 }
 
@@ -513,20 +458,15 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetIsNew(_Out_ BOOL* pbVal
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetIsRemoved(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetIsRemoved"));
     IfNullRetPointer(pbValue);
 
     *pbValue = m_bIsRemoved;
-
-    CLogging::LogMessage(_T("End CInstruction::GetIsRemoved"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetInstructionSize(_Out_ DWORD* pdwSize)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetInstructionSize"));
     IfNullRetPointer(pdwSize);
 
     DWORD dwOpCodeLength = 0;
@@ -536,48 +476,33 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetInstructionSize(_Out_ D
     IfFailRet(this->GetOperandLength(&dwOperandLength));
 
     *pdwSize = dwOpCodeLength + dwOperandLength;
-
-    CLogging::LogMessage(_T("End CInstruction::GetInstructionSize"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetIsBranch(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetIsBranch"));
     IfNullRetPointer(pbValue);
 
     *pbValue = GetIsBranchInternal();
-
-    CLogging::LogMessage(_T("End CInstruction::GetIsBranch"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetIsSwitch(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetIsSwitch"));
     IfNullRetPointer(pbValue);
 
     *pbValue = GetIsSwitchInternal();
-
-    CLogging::LogMessage(_T("End CInstruction::GetIsSwitch"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetIsCallInstruction(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetIsCallInstruction"));
     IfNullRetPointer(pbValue);
 
     *pbValue = (m_opcode == Cee_Call || m_opcode == Cee_Calli || m_opcode == Cee_Callvirt);
-
-    CLogging::LogMessage(_T("End CInstruction::GetIsCallInstruction"));
-
     return S_OK;
 }
 
@@ -669,42 +594,30 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetIsFallThrough(_Out_ BOO
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetNextInstruction(_Out_ IInstruction** ppNextInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetNextInstruction"));
     IfNullRetPointer(ppNextInstruction);
     *ppNextInstruction = NULL;
 
     if (m_pNextInstruction == NULL)
-    {
-        CLogging::LogMessage(_T("CInstruction::GetNextInstruction - no next instruction"));
-        return E_FAIL;
+    {        return E_FAIL;
     }
 
     *ppNextInstruction = (IInstruction*)(m_pNextInstruction.p);
     (*ppNextInstruction)->AddRef();
-
-    CLogging::LogMessage(_T("End CInstruction::GetNextInstruction"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetPreviousInstruction(_Out_ IInstruction** ppPrevInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetPreviousInstruction"));
     IfNullRetPointer(ppPrevInstruction);
     *ppPrevInstruction = NULL;
 
     if (m_pPreviousInstruction == NULL)
-    {
-        CLogging::LogMessage(_T("CInstruction::GetPreviousInstruction - no previous instruction"));
-        return E_FAIL;
+    {        return E_FAIL;
     }
 
     *ppPrevInstruction = (IInstruction*)(m_pPreviousInstruction.p);
     (*ppPrevInstruction)->AddRef();
-
-    CLogging::LogMessage(_T("End CInstruction::GetPreviousInstruction"));
-
     return S_OK;
 }
 
@@ -712,112 +625,75 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetPreviousInstruction(_Ou
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOriginalNextInstruction(_Out_ IInstruction** ppNextInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetOriginalNextInstruction"));
     IfNullRetPointer(ppNextInstruction);
     *ppNextInstruction = NULL;
 
     if (m_pOriginalNextInstruction == NULL)
-    {
-        CLogging::LogMessage(_T("CInstruction::GetOriginalNextInstruction - no original next instruction"));
-        return E_FAIL;
+    {        return E_FAIL;
     }
 
     *ppNextInstruction = (IInstruction*)(m_pOriginalNextInstruction.p);
     (*ppNextInstruction)->AddRef();
-
-    CLogging::LogMessage(_T("End CInstruction::GetOriginalNextInstruction"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetOriginalPreviousInstruction(_Out_ IInstruction** ppPrevInstruction)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::GetOriginalPreviousInstruction"));
     IfNullRetPointer(ppPrevInstruction);
     *ppPrevInstruction = NULL;
 
     if (m_pOriginalPreviousInstruction == NULL)
-    {
-        CLogging::LogMessage(_T("CInstruction::GetOriginalPreviousInstruction - no original previous instruction"));
-        return E_FAIL;
+    {        return E_FAIL;
     }
 
     *ppPrevInstruction = (IInstruction*)(m_pOriginalPreviousInstruction.p);
     (*ppPrevInstruction)->AddRef();
-
-    CLogging::LogMessage(_T("End CInstruction::GetOriginalPreviousInstruction"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::SetNextInstruction(_In_opt_ CInstruction* pInstruction, _In_ bool setOrig)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::SetNextInstruction"));
-
     m_pNextInstruction = pInstruction;
 
     if (m_pOriginalNextInstruction == NULL && setOrig)
     {
         m_pOriginalNextInstruction = m_pNextInstruction;
     }
-
-    CLogging::LogMessage(_T("End CInstruction::SetNextInstruction"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::SetPreviousInstruction(_In_opt_ CInstruction* pInstruction, _In_ bool setOrig)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::SetPreviousInstruction"));
-
     m_pPreviousInstruction = pInstruction;
 
     if (m_pOriginalPreviousInstruction == NULL && setOrig)
     {
         m_pOriginalPreviousInstruction = m_pPreviousInstruction;
     }
-
-    CLogging::LogMessage(_T("End CInstruction::SetPreviousInstruction"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::SetOriginalOffset(_In_ ULONG offset)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::SetOriginalOffset offset is %04x"), offset);
-
     m_origOffset = offset;
-
-    CLogging::LogMessage(_T("End CInstruction::SetOriginalOffset"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::SetOffset(_In_ ULONG offset)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::SetOffset offset is %04x"), offset);
-
     m_offset = offset;
-
-    CLogging::LogMessage(_T("End CInstruction::SetOffset"));
-
     return S_OK;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::SetInstructionGeneration(_In_ InstructionGeneration instructionGeneration)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CInstruction::SetInstructionGeneration"));
-
     m_instructionGeneration = instructionGeneration;
-
-    CLogging::LogMessage(_T("End CInstruction::SetInstructionGeneration"));
-
     return S_OK;
 }
 
@@ -913,14 +789,9 @@ HRESULT MicrosoftInstrumentationEngine::COperandInstruction::InitializeFromBytes
 HRESULT MicrosoftInstrumentationEngine::COperandInstruction::GetOperandType(_Out_ enum ILOperandType* pType)
 {
     HRESULT hr = S_OK;
-
-    CLogging::LogMessage(_T("Starting COperandInstruction::GetOperandType"));
     IfNullRetPointer(pType);
 
     *pType = s_ilOpcodeInfo[m_opcode].m_type;
-
-    CLogging::LogMessage(_T("End COperandInstruction::GetOperandType"));
-
     return S_OK;
 }
 
@@ -931,8 +802,6 @@ HRESULT MicrosoftInstrumentationEngine::COperandInstruction::GetOperandValue(
     )
 {
     HRESULT hr = S_OK;
-
-    CLogging::LogMessage(_T("Starting COperandInstruction::GetOperandValue"));
     IfNullRetPointer(pBytes);
 
     if (dwSize < s_ilOpcodeInfo[m_opcode].m_operandLength)
@@ -970,9 +839,6 @@ HRESULT MicrosoftInstrumentationEngine::COperandInstruction::GetOperandValue(
             return E_FAIL;
         }
     }
-
-    CLogging::LogMessage(_T("End COperandInstruction::GetOperandValue"));
-
     return hr;
 }
 
@@ -982,8 +848,6 @@ HRESULT MicrosoftInstrumentationEngine::COperandInstruction::SetOperandValue(
         )
 {
     HRESULT hr = S_OK;
-
-    CLogging::LogMessage(_T("Starting COperandInstruction::SetOperandValue"));
     IfNullRetPointer(pBytes);
 
     if (dwSize != s_ilOpcodeInfo[m_opcode].m_operandLength)
@@ -1021,9 +885,6 @@ HRESULT MicrosoftInstrumentationEngine::COperandInstruction::SetOperandValue(
             return E_FAIL;
         }
     }
-
-    CLogging::LogMessage(_T("End COperandInstruction::SetOperandValue"));
-
     return S_OK;
 }
 
@@ -1087,13 +948,9 @@ HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::InitializeFromBytes(
 HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::IsShortBranch(_Out_ BOOL* pbValue)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CBranchInstruction::IsShortBranch"));
     IfNullRetPointer(pbValue);
 
     *pbValue = (m_opcode < Cee_Br || m_opcode == Cee_Leave_S);
-
-    CLogging::LogMessage(_T("End CBranchInstruction::IsShortBranch"));
-
     return hr;
 }
 
@@ -1102,8 +959,6 @@ HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::IsShortBranch(_Out_ 
 HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::ExpandBranch()
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CBranchInstruction::ExpandBranch"));
-
     if (CInstruction::s_ilOpcodeInfo[m_opcode].m_operandLength == 1)
     {
         //Expand the branch to the long form
@@ -1117,9 +972,6 @@ HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::ExpandBranch()
             m_opcode = (ILOrdinalOpcode) (m_opcode + (Cee_Br - Cee_Br_S));
         }
     }
-
-    CLogging::LogMessage(_T("End CBranchInstruction::ExpandBranch"));
-
     return S_OK;
 }
 
@@ -1127,23 +979,16 @@ HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::ExpandBranch()
 HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::GetBranchTarget(_Out_ IInstruction** ppTarget)
 {
     HRESULT hr = S_OK;
-
-    CLogging::LogMessage(_T("Starting CBranchInstruction::GetTargetOffset"));
     IfNullRetPointer(ppTarget);
 
     *ppTarget = (IInstruction*)m_pBranchTarget;
     (*ppTarget)->AddRef();
-
-    CLogging::LogMessage(_T("End CBranchInstruction::GetTargetOffset"));
-
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::GetTargetOffset(_Out_ DWORD* pOffset)
 {
     HRESULT hr = S_OK;
-
-    CLogging::LogMessage(_T("Starting CBranchInstruction::GetTargetOffset"));
     IfNullRetPointer(pOffset);
     *pOffset = 0;
 
@@ -1155,17 +1000,12 @@ HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::GetTargetOffset(_Out
     {
         *pOffset = m_decodedTargetOffset;
     }
-
-    CLogging::LogMessage(_T("End CBranchInstruction::GetTargetOffset"));
-
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::SetBranchTarget(_In_ IInstruction* pInstruction)
 {
     HRESULT hr = S_OK;
-
-    CLogging::LogMessage(_T("Starting CBranchInstruction::SetBranchTarget"));
     IfNullRetPointer(pInstruction);
 
     m_pBranchTarget = (CInstruction*)pInstruction;
@@ -1181,9 +1021,6 @@ HRESULT MicrosoftInstrumentationEngine::CBranchInstruction::SetBranchTarget(_In_
     {
         m_pOrigBranchTarget = m_pBranchTarget;
     }
-
-    CLogging::LogMessage(_T("End CBranchInstruction::SetBranchTarget"));
-
     return hr;
 }
 
@@ -1219,9 +1056,6 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::InitializeFromBytes(
     )
 {
     HRESULT hr = S_OK;
-
-    CLogging::LogMessage(_T("Starting CSwitchInstruction::Initialize"));
-
     const ULONG* p = (ULONG*)(pCode + CInstruction::s_ilOpcodeInfo[m_opcode].m_opcodeLength);
     ULONG count = *p;  // First U4 integer is the count of branch deltas
     p++;
@@ -1237,9 +1071,6 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::InitializeFromBytes(
         m_origBranchTargetOffsets.push_back(*p);
         p++;
     }
-
-    CLogging::LogMessage(_T("End CSwitchInstruction::Initialize"));
-
     return hr;
 }
 
@@ -1256,16 +1087,11 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::GetOperandLength(_Ou
 HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::GetBranchTarget(_In_ DWORD index, _Out_ IInstruction** ppTarget)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CSwitchInstruction::GetBranchTarget"));
-
     *ppTarget = GetBranchTargetInternal(index);
     if (*ppTarget != NULL)
     {
         (*ppTarget)->AddRef();
     }
-
-    CLogging::LogMessage(_T("End CSwitchInstruction::GetBranchTarget"));
-
     return hr;
 }
 
@@ -1291,33 +1117,21 @@ CInstruction* MicrosoftInstrumentationEngine::CSwitchInstruction::GetBranchTarge
 HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::SetBranchTarget(_In_ DWORD index, _In_ IInstruction* pTarget)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CSwitchInstruction::SetBranchTarget"));
-
     m_branchTargets[index] = (CInstruction*)(pTarget);
     IfFailRet(m_pGraph->SetBranchTarget(this, (CInstruction*)(pTarget)));
-
-    CLogging::LogMessage(_T("End CSwitchInstruction::SetBranchTarget"));
-
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::RemoveBranchTargetAt(_In_ DWORD index)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CSwitchInstruction::RemoveBranchTargetAt"));
-
     m_branchTargets.erase(m_branchTargets.begin() + index);
-
-    CLogging::LogMessage(_T("End CSwitchInstruction::RemoveBranchTargetAt"));
-
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::RemoveBranchTarget(_In_ IInstruction* pTarget)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CSwitchInstruction::RemoveBranchTarget"));
-
     for(std::vector<CComPtr<CInstruction>>::iterator iter = m_branchTargets.begin(); iter != m_branchTargets.end(); iter++)
     {
         if(*iter == pTarget)
@@ -1325,9 +1139,6 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::RemoveBranchTarget(_
             m_branchTargets.erase(iter);
         }
     }
-
-    CLogging::LogMessage(_T("End CSwitchInstruction::RemoveBranchTarget"));
-
 
     return hr;
 }
@@ -1337,8 +1148,6 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::RemoveBranchTarget(_
 HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::ReplaceBranchTarget(_In_ IInstruction* pOriginal, _In_  IInstruction *pNew)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CSwitchInstruction::SetBranchTarget"));
-
     for(ULONG i = 0; i < m_branchTargets.size(); i++)
     {
         if(m_branchTargets[i] == pOriginal)
@@ -1347,9 +1156,6 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::ReplaceBranchTarget(
             //Need to continue as several branches of the switch might point to the same location
         }
     }
-
-    CLogging::LogMessage(_T("End CSwitchInstruction::SetBranchTarget"));
-
     return hr;
 }
 
@@ -1357,21 +1163,14 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::ReplaceBranchTarget(
 HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::GetBranchCount(_Out_ DWORD* pBranchCount)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CSwitchInstruction::GetBranchCount"));
-
     IfNullRetPointer(pBranchCount);
     *pBranchCount = (DWORD)(m_branchTargets.size());
-
-    CLogging::LogMessage(_T("End CSwitchInstruction::GetBranchCount"));
-
     return hr;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::GetBranchOffset(_In_ DWORD index, _In_ DWORD* pdwOffset)
 {
     HRESULT hr = S_OK;
-    CLogging::LogMessage(_T("Starting CSwitchInstruction::GetBranchCount"));
-
     IfNullRetPointer(pdwOffset);
 
     CComPtr<CInstruction> pInstruction = m_branchTargets[index];
@@ -1384,16 +1183,11 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::GetBranchOffset(_In_
         // The offsets encoded in the instruction stream are relative to this instruction
         *pdwOffset = m_origBranchTargetOffsets[index];
     }
-
-    CLogging::LogMessage(_T("End CSwitchInstruction::GetBranchCount"));
-
     return hr;
 }
 
 MicrosoftInstrumentationEngine::CLoadConstInstruction::CLoadConstInstruction(_In_ int value) : COperandInstruction(Cee_Ldc_I4, TRUE)
 {
-    CLogging::LogMessage(_T("Starting CLoadConstInstruction::CLoadConstInstruction"));
-
     // Check if the instruction can can be made a one byte
     // where the value of the constant is implied by the opcode
     if (value >= -1 && value <= 8)
@@ -1409,17 +1203,12 @@ MicrosoftInstrumentationEngine::CLoadConstInstruction::CLoadConstInstruction(_In
     else
     {
         m_value.i = value;
-    }
-
-    CLogging::LogMessage(_T("End CLoadConstInstruction::CLoadConstInstruction"));
-}
+    }}
 
 MicrosoftInstrumentationEngine::CLoadLocalInstruction::CLoadLocalInstruction(
            _In_ USHORT index
             ) : COperandInstruction(Cee_Ldloc, TRUE)
 {
-    CLogging::LogMessage(_T("Starting CLoadLocalInstruction::CLoadLocalInstruction"));
-
     // Check if the instruction can can be made a one byte
     if (index < 4)
     {
@@ -1435,10 +1224,7 @@ MicrosoftInstrumentationEngine::CLoadLocalInstruction::CLoadLocalInstruction(
     {
         m_opcode = Cee_Ldloc;
         m_value.i = index;
-    }
-
-    CLogging::LogMessage(_T("End CLoadLocalInstruction::CLoadLocalInstruction"));
-}
+    }}
 
 
 
@@ -1446,8 +1232,6 @@ MicrosoftInstrumentationEngine::CLoadLocalAddrInstruction::CLoadLocalAddrInstruc
            _In_ USHORT index
             ) : COperandInstruction(Cee_Ldloca, TRUE)
 {
-    CLogging::LogMessage(_T("Starting CLoadLocalAddrInstruction::CLoadLocalAddrInstruction"));
-
     // Check if the instruction can can be made a one byte
     if (index <= 0xff)
     {
@@ -1458,17 +1242,12 @@ MicrosoftInstrumentationEngine::CLoadLocalAddrInstruction::CLoadLocalAddrInstruc
     {
         m_opcode = Cee_Ldloca;
         m_value.i = index;
-    }
-
-    CLogging::LogMessage(_T("End CLoadLocalAddrInstruction::CLoadLocalAddrInstruction"));
-}
+    }}
 
 MicrosoftInstrumentationEngine::CStoreLocalInstruction::CStoreLocalInstruction(
         _In_ USHORT index
         ) : COperandInstruction(Cee_Stloc, TRUE)
 {
-    CLogging::LogMessage(_T("Starting CLoadLocalAddrInstruction::CStoreLocalInstruction"));
-
     // Check if the instruction can can be made a one byte
     if (index < 4)
     {
@@ -1484,18 +1263,13 @@ MicrosoftInstrumentationEngine::CStoreLocalInstruction::CStoreLocalInstruction(
     {
         m_opcode = Cee_Stloc;
         m_value.i = index;
-    }
-
-    CLogging::LogMessage(_T("End CLoadLocalAddrInstruction::CStoreLocalInstruction"));
-}
+    }}
 
 
 MicrosoftInstrumentationEngine::CLoadArgInstruction::CLoadArgInstruction(
            _In_ USHORT index
             ) : COperandInstruction(Cee_Ldarg, TRUE)
 {
-    CLogging::LogMessage(_T("Starting CLoadLocalAddrInstruction::CLoadArgInstruction"));
-
     // Check if the instruction can can be made a one byte
     if (index < 4)
     {
@@ -1511,17 +1285,12 @@ MicrosoftInstrumentationEngine::CLoadArgInstruction::CLoadArgInstruction(
     {
         m_opcode = Cee_Ldarg;
         m_value.i = (BYTE) index;
-    }
-
-    CLogging::LogMessage(_T("End CLoadLocalAddrInstruction::CLoadArgInstruction"));
-}
+    }}
 
 MicrosoftInstrumentationEngine::CLoadArgAddrInstruction::CLoadArgAddrInstruction(
            _In_ USHORT index
             ) : COperandInstruction(Cee_Ldarga, TRUE)
 {
-    CLogging::LogMessage(_T("Starting CLoadLocalAddrInstruction::CLoadArgAddrInstruction"));
-
     // Check if the instruction can can be 2 bytes
     if (index <= 0xff)
     {
@@ -1532,10 +1301,7 @@ MicrosoftInstrumentationEngine::CLoadArgAddrInstruction::CLoadArgAddrInstruction
     {
         m_opcode = Cee_Ldarga;
         m_value.i = (BYTE) index;
-    }
-
-    CLogging::LogMessage(_T("End CLoadLocalAddrInstruction::CLoadArgAddrInstruction"));
-}
+    }}
 
 // Return the instruction's impact on the execution stack.
 // This can be positive for a push and negative for a pop.
