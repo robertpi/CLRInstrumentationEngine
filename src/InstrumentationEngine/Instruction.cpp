@@ -464,19 +464,9 @@ HRESULT MicrosoftInstrumentationEngine::CInstruction::GetIsRemoved(_Out_ BOOL* p
     return S_OK;
 }
 
-HRESULT MicrosoftInstrumentationEngine::CInstruction::GetInstructionSize(_Out_ DWORD* pdwSize)
+DWORD MicrosoftInstrumentationEngine::CInstruction::GetInstructionSize()
 {
-    HRESULT hr = S_OK;
-    IfNullRetPointer(pdwSize);
-
-    DWORD dwOpCodeLength = 0;
-    IfFailRet(this->GetOpcodeLength(&dwOpCodeLength));
-
-    DWORD dwOperandLength = 0;
-    IfFailRet(this->GetOperandLength(&dwOperandLength));
-
-    *pdwSize = dwOpCodeLength + dwOperandLength;
-    return S_OK;
+    return s_ilOpcodeInfo[m_opcode].m_opcodeLength + s_ilOpcodeInfo[m_opcode].m_operandLength;
 }
 
 HRESULT MicrosoftInstrumentationEngine::CInstruction::GetIsBranch(_Out_ BOOL* pbValue)
@@ -1082,6 +1072,11 @@ HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::GetOperandLength(_Ou
     *pdwSize = ((DWORD)(m_branchTargets.size()) + 1) * sizeof(DWORD);
 
     return hr;
+}
+
+DWORD MicrosoftInstrumentationEngine::CSwitchInstruction::GetInstructionSize()
+{
+    return s_ilOpcodeInfo[m_opcode].m_opcodeLength + ((DWORD)(m_branchTargets.size()) + 1) * sizeof(DWORD);
 }
 
 HRESULT MicrosoftInstrumentationEngine::CSwitchInstruction::GetBranchTarget(_In_ DWORD index, _Out_ IInstruction** ppTarget)
