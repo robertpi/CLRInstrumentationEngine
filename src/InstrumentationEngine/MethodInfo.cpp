@@ -1311,6 +1311,15 @@ HRESULT MicrosoftInstrumentationEngine::CMethodInfo::SetFinalRenderedFunctionBod
 
     m_cbFinalRenderedMethod = cbMethodSize;
 
+    // it seems m_pIntermediateRenderedMethod can be nullptr at this point, which leads to errors later
+    if (m_pIntermediateRenderedMethod == nullptr)
+    {
+        m_pIntermediateRenderedMethod.Allocate(cbMethodSize);
+        IfFailRetErrno(memcpy_s(m_pIntermediateRenderedMethod, cbMethodSize, pMethodHeader, cbMethodSize));
+
+        m_cbIntermediateRenderedMethod = cbMethodSize;
+    }
+
     CLogging::LogMessage(_T("End CMethodInfo::SetFinalRenderedFunctionBody"));
 
     return hr;

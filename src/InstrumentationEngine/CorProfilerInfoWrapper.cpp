@@ -439,6 +439,8 @@ HRESULT MicrosoftInstrumentationEngine::CCorProfilerInfoWrapper::SetILFunctionBo
 {
     HRESULT hr = S_OK;
 
+    CLogging::LogDumpMessage(_T("SetILFunctionBody starting, methodToken: %i"), methodToken);
+
     CComPtr<CAppDomainCollection> pAppDomainCollection;
     IfFailRet(m_pProfilerManager->GetAppDomainCollection((IAppDomainCollection**)&pAppDomainCollection));
 
@@ -469,7 +471,15 @@ HRESULT MicrosoftInstrumentationEngine::CCorProfilerInfoWrapper::SetILFunctionBo
             // Calculating the actual method size would require a fourth parse of header.
             IfFailRet(pMethodInfo->SetFinalRenderedFunctionBody(pbNewILMethodHeader, cbBuffer));
         }
+        else
+        {
+            CLogging::LogDumpMessage(_T("SetILFunctionBody - failed to find pMethodInfo, treat as new method"));
+            // if we fail to find the method info, assume this is a new method, so not available to other profilers
+            m_pRealCorProfilerInfo->SetILFunctionBody(moduleId, methodToken, pbNewILMethodHeader);
+        }
     }
+
+    CLogging::LogDumpMessage(_T("SetILFunctionBody ending, methodToken: %i"), methodToken);
 
     return S_OK;
 }
